@@ -3,7 +3,7 @@ module ddr2_controller(
    // Outputs
    dout, raddr, fillcount, notfull, ready, ck_pad, ckbar_pad,
    cke_pad, csbar_pad, rasbar_pad, casbar_pad, webar_pad, ba_pad,
-   a_pad, dm_pad, odt_pad,
+   a_pad, dm_pad, odt_pad,notempty,
    // Inouts
    dq_pad, dqs_pad, dqsbar_pad,
    // Inputs
@@ -148,7 +148,7 @@ module ddr2_controller(
 						   .webar				(init_webar),
 						   .ba					(init_ba[1:0]),
 						   .a					(init_a[12:0]),
-						   .dm					(init_dm[1:0]),
+						 //  .dm					(init_dm[1:0]),
 						   .odt					(init_odt),
 						   .ts_con				(init_ts_con),
 						   .cke                 (init_cke),

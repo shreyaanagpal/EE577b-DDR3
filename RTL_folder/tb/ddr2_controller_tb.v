@@ -11,7 +11,7 @@ reg initddr;
 wire [15:0] dout;
 wire [24:0] raddr;
 wire [6:0] fillcount;
-wire notfull, ready, ck_pad, ckbar_pad, cke_pad, csbar_pad, rasbar_pad, casbar_pad, webar_pad;
+wire notfull, notempty, ready, ck_pad, ckbar_pad, cke_pad, csbar_pad, rasbar_pad, casbar_pad, webar_pad;
 wire [1:0] ba_pad;
 wire [12:0] a_pad; 
 wire [1:0] dm_pad;
@@ -26,7 +26,7 @@ ddr2_controller DUT(
    // Outputs
    dout, raddr, fillcount, notfull, ready, ck_pad, ckbar_pad,
    cke_pad, csbar_pad, rasbar_pad, casbar_pad, webar_pad, ba_pad,
-   a_pad, dm_pad, odt_pad,
+   a_pad, dm_pad, odt_pad,notempty,
    // Inouts
    dq_pad, dqs_pad, dqsbar_pad,
    // Inputs

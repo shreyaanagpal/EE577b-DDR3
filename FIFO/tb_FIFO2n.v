@@ -9,6 +9,9 @@ FIFO fifo(clk, reset, data_in, put, get, data_out, empty, full, fillcount);
 
 initial begin
 clk =1;
+reset = 1;
+put = 0;
+get = 0;
 forever begin
 #5;
 clk = ~clk;
@@ -16,11 +19,11 @@ end
 end
 
 initial begin
-reset = 1;
 #5;
 reset = 0;
+data_in =1;
 #25;
-data_in =1; put =1;
+ put =1;
 #10;     
 data_in =2; put=1;
 #10;     
