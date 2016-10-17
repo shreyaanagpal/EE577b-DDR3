@@ -2,34 +2,34 @@
 // There is a NOP command issued 1 DDR clock cycle after most commands
 // More information about each stage is in the Verilog code below
 
-`define S_NOP1	17'd50000 // Send NOP with CKE low
-`define S_CKE	17'd50000 // Set CKE High
-`define S_PRE1	17'd50400 // First Precharge
-`define S_NOP2	17'd50400 // NOP after Precharge
-`define S_EMRS2	17'd50403// Set EMRS 2
-`define S_NOP3 	17'd50403 // NOP after EMRS 2
-`define S_EMRS3	17'd50404 // Set EMRS 3
-`define S_NOP4	17'd50404 // NOP after EMRS 3
-`define S_DLL	17'd50405// DLL Set
-`define S_NOP5	17'd50405 // NOP after DLL Set
-`define S_DLLR	17'd50406// DLL Reset
-`define S_NOP6	17'd50406 // NOP after DLL Reset
-`define S_PRE2	17'd50407 // 2nd Precharge
-`define S_NOP7	17'd50407 // NOP after 2nd Precharge
-`define S_AUTO1	17'd50410 // Part 1 of Auto Refresh
-`define S_NOP8	17'd50410 // NOP after Auto Refresh 1
-`define S_AUTO2 17'd50610// Send Auto Refresh
-`define S_NOP9	17'd50610 // NOP after Auto Refresh 2
-`define S_MRS	17'd50810 // Set MRS register
-`define S_NOP10	17'd50810 // NOP afer MRS
-`define S_EMRS1	17'd50811 // Set EMRS1 register
-`define S_NOP11	17'd50811 // NOP after EMRS1
-`define S_OCD	17'd51211 // OCD Calibration
-`define S_NOP12 17'd51211 // NOP after OCD calibration
-`define S_PRE3	17'd51212 // Third Precharge
-`define S_NOP13	17'd51212 // NOP after Precharge
-`define S_ODT	17'd51215// Raise ODT When memory is ready
-`define S_DONE	17'd51215// Memory is ready
+`define S_NOP1	17'd100000 // Send NOP with CKE low
+`define S_CKE	17'd100000 // Set CKE High
+`define S_PRE1	17'd100202 // First Precharge
+`define S_NOP2	17'd100204 // NOP after Precharge
+`define S_EMRS2	17'd100218// Set EMRS 2
+`define S_NOP3 	17'd100220 // NOP after EMRS 2
+`define S_EMRS3	17'd100230 // Set EMRS 3
+`define S_NOP4	17'd100232 // NOP after EMRS 3
+`define S_DLL	17'd100422// DLL Set
+`define S_NOP5	17'd100424 // NOP after DLL Set
+`define S_DLLR	17'd100432// DLL Reset
+`define S_NOP6	17'd100434 // NOP after DLL Reset
+`define S_PRE2	17'd100442// 2nd Precharge
+`define S_NOP7	17'd100444 // NOP after 2nd Precharge
+`define S_AUTO1	17'd100454 // Part 1 of Auto Refresh
+`define S_NOP8	17'd100456 // NOP after Auto Refresh 1
+`define S_AUTO2 17'd100510 // Send Auto Refresh
+`define S_NOP9	17'd100512 // NOP after Auto Refresh 2
+`define S_MRS	17'd101566 // Set MRS register
+`define S_NOP10	17'd101568 // NOP afer MRS
+`define S_EMRS1	17'd101574 // Set EMRS1 register
+`define S_NOP11	17'd101676 // NOP after EMRS1
+`define S_OCD	17'd101682 // OCD Calibration
+`define S_NOP12 17'd101684 // NOP after OCD calibration
+`define S_PRE3	17'd101670 // Third Precharge
+`define S_NOP13	17'd101672 // NOP after Precharge
+`define S_ODT	17'd101678// Raise ODT When memory is ready
+`define S_DONE	17'd101680// Memory is ready
 
 /////////////////////////////////////////////////////////
 
@@ -179,7 +179,7 @@ begin
         	        {csbar, rasbar, casbar, webar} <=0000 ; // EMRS command 
         	        // FILL IN VALUES
 			a[2:0] <= 011 ; // Burst Length
-        	        a[3] <= 0; // Burst Type
+        	        a[3] <= 1; // Burst Type
                		a[6:4] <= 100 ; // CAS_BAR Latency
                 	//
 			a[7] <= 0; // TM = Normal
@@ -299,7 +299,7 @@ begin
 
         	`S_ODT:  begin
         	        {csbar, rasbar, casbar, webar} <= 0111; // NOP command
-        	        odt <= 1;
+        	        odt <= 0;
         	        end
         // ----------------------------------------------------------
         // DDR2 Setup Done!
