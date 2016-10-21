@@ -13,8 +13,9 @@
 
 module tb;
 
-parameter DATA_WIDTH = 32,
-          FIFO_DEPTH = 16;
+parameter DATA_WIDTH = 4,
+          FIFO_DEPTH = 4,
+          PTR_WIDTH  = 3;
 
 reg rclk, wclk, reset, put, get;
 wire empty_bar, full_bar;
@@ -23,7 +24,7 @@ reg  [DATA_WIDTH-1:0] data_in;
 integer i=0;
 
 //no parameters for GLS!
-FIFO_2clk u1(.rclk(rclk),
+FIFO_2clk  u1(.rclk(rclk),
 	     .wclk(wclk),
              .reset(reset),
              .we(put),
@@ -46,25 +47,28 @@ reset   = 0;
 for(i=0; i<FIFO_DEPTH; i=i+1)  
 begin
   put = 1;
-  data_in = i;
+  data_in = i+1;
   get = 0;
-  #50;
-  put = 0;
+  #100;
 end
 //empty the FIFO
 put = 0;
-get = 1;
-//put and get at the same time
+#10;
 for(i=0; i<FIFO_DEPTH; i=i+1)  
 begin
-  put = 1;
-  data_in = i;
   get = 1;
-  #50;
-  put = 0;
-  get = 0;
+  #25;
 end
-
+#400;
+//read and write simultaneously 
+for(i=0; i<FIFO_DEPTH; i=i+1)
+begin
+  get = 1;
+  put = 1;
+  data_in = 4'hA + i;
+  #100;
+end
+#600;
 $finish;
 end
 
