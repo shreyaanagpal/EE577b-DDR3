@@ -20,7 +20,7 @@ set negedge [expr $clk_period * 0.5];
 
 # Reading source verilog file.
 # Copy your verilog file into ./src/ before synthesis.
-read_verilog ./src/FIFO_2clk.v ;
+read_verilog ./design/FIFO_2clk.v ;
 
 # Setting $design_name as current working design.
 # Use this command before setting any constraints.
