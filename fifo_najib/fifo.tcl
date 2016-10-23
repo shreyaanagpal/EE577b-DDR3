@@ -12,14 +12,11 @@
 set design_name FIFO_2clk;
 
 #setting WCLK (ns)
-set clk_period_wclk 50.0;
-set posedge_wclk 0.0;
-set negedge_wclk [expr $clk_period_wclk * 0.5];
+set clk_period 5.0;
+set posedge 0.0;
+set negedge [expr $clk_period * 0.5];
 
-#setting RCLK (ns)
-set clk_period_rclk 2.50;
-set posedge_rclk 0.0;
-set negedge_rclk [expr $clk_period_rclk * 0.5];
+
 
 # Reading source verilog file.
 # Copy your verilog file into ./src/ before synthesis.
@@ -42,28 +39,27 @@ link ;
 # => clock period, input delay, output delay
 
 # (1) Setting clock period.
-create_clock -name "wclk" -period $clk_period_wclk -waveform [list $posedge_wclk $negedge_wclk] [get_ports wclk];
-create_clock -name "rclk" -period $clk_period_rclk -waveform [list $posedge_rclk $negedge_rclk] [get_ports rclk];
+create_clock -name "clk" -period $clk_period -waveform [list $posedge $negedge] [get_ports clk];
+
 
 # (2) Setting additional constraints for clock signal,
 # so that clock network should be ideal network without any buffers.
-set_dont_touch_network wclk ;
-set_dont_touch_network rclk;
-set_ideal_network wclk ;
-set_ideal_network rclk;
+set_dont_touch_network clk ;
+set_ideal_network clk ;
+
 
 # (3) Setting input path delays on input ports(except clock) relative to a clock edge .
 # Input signals will arrive after this delay.
-set_input_delay 1.0 -clock rclk {re};
-set_input_delay 1.0 -clock wclk {we};
-set_input_delay 1.0 -clock wclk {data_in};
-
+#set_input_delay 1.0 -clock rclk {re};
+#set_input_delay 1.0 -clock wclk {we};
+#set_input_delay 1.0 -clock wclk {data_in};
+set_input_delay 1.0 -max -clock clk [remove_from_collection [all_inputs] [get_ports "clk"]] ;
 # (4) Setting output path delays on output ports relative to a clock edge.
 # output signals should be generated before this delay.
-set_output_delay 1.0 -clock rclk {empty_bar};
-set_output_delay 1.0 -clock rclk {data_out};
-set_output_delay 1.0 -clock wclk {full_bar};
-
+#set_output_delay 1.0 -clock rclk {empty_bar};
+#set_output_delay 1.0 -clock rclk {data_out};
+#set_output_delay 1.0 -clock wclk {full_bar};
+set_output_delay 1.0 -clock clk [all_outputs] ;
 # (5) Setting false paths
 set_false_path -from wclk -to rclk;
 
