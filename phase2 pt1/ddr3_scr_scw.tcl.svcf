@@ -1,0 +1,233 @@
+# SimVision Command Script (Tue Oct 25 08:56:15 PDT 2016)
+#
+# Version 08.20.p001
+#
+# You can restore this configuration with:
+#
+#     ncsim -STATUS -NOCOPYRIGHT -MESSAGES -NCFATAL INVSUP -NOWARN DLBRLK -TCL -NOLOG -NOKEY -INPUT ./scripts/runscript.tcl -GUI tb -input /home/scf-23/nhourani/ee577b/project/phase2/ddr3_scr_scw.tcl
+#
+
+
+#
+# preferences
+#
+preferences set toolbar-SimControl-WatchList {
+  usual
+  hide set_break
+}
+preferences set toolbar-SimControl-WaveWindow {
+  usual
+  position -row 1
+}
+preferences set toolbar-CursorControl-WaveWindow {
+  usual
+  position -row 0 -pos 4
+}
+preferences set toolbar-TimeSearch-WaveWindow {
+  usual
+  position -row 0
+}
+preferences set toolbar-NavSignalList-WaveWindow {
+  usual
+  position -row 0 -pos 2
+}
+preferences set toolbar-Windows-WaveWindow {
+  usual
+  position -pos 5
+}
+preferences set toolbar-WaveZoom-WaveWindow {
+  usual
+  position -row 1 -pos 0 -anchor w
+}
+
+#
+# Simulator
+#
+
+database require simulator -hints {
+	simulator "ncsim -STATUS -NOCOPYRIGHT -MESSAGES -NCFATAL INVSUP -NOWARN DLBRLK -TCL -NOLOG -NOKEY -INPUT ./scripts/runscript.tcl -GUI tb -input ddr3_scr_scw.tcl"
+}
+
+#
+# groups
+#
+catch {group new -name {Memory Interface} -overlay 0}
+catch {group new -name {Memory Controller} -overlay 0}
+catch {group new -name {Processing Logic} -overlay 0}
+catch {group new -name {Group 4} -overlay 0}
+catch {group new -name Testbench -overlay 0}
+catch {group new -name {CMD FIFO} -overlay 0}
+
+group using {Memory Interface}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    tb.c0_ck_pad \
+    {tb.c0_a_pad[12:0]} \
+    {tb.c0_ba_pad[2:0]} \
+    tb.c0_casbar_pad \
+    tb.c0_ckbar_pad \
+    tb.c0_cke_pad \
+    tb.c0_csbar_pad \
+    {tb.c0_dm_pad[1:0]} \
+    {tb.c0_dq_pad[15:0]} \
+    {tb.c0_dqs_pad[1:0]} \
+    {tb.c0_dqsbar_pad[1:0]} \
+    tb.c0_odt_pad \
+    tb.c0_rasbar_pad \
+    tb.c0_resetbar_pad \
+    tb.c0_webar_pad
+
+group using {Memory Controller}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    tb.clk \
+    tb.reset \
+    tb.ready \
+    {tb.addr[25:0]} \
+    {tb.raddr[25:0]} \
+    {tb.XCON.CMD_data_in[33:0]} \
+    {tb.cmd[2:0]} \
+    {tb.op[2:0]} \
+    {tb.sz[1:0]} \
+    {tb.din[15:0]} \
+    {tb.dout[15:0]}
+
+group using {Processing Logic}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    {tb.XCON.PLOGIC.addr[25:0]} \
+    {tb.XCON.PLOGIC.CMD_data_out[33:0]} \
+    tb.XCON.PLOGIC.cas_bar \
+    tb.XCON.PLOGIC.ck \
+    tb.XCON.PLOGIC.clk \
+    {tb.XCON.PLOGIC.cmd[2:0]} \
+    tb.XCON.PLOGIC.cs_bar \
+    tb.XCON.PLOGIC.i \
+    tb.XCON.PLOGIC.j \
+    tb.XCON.PLOGIC.listen \
+    {tb.XCON.PLOGIC.op[2:0]} \
+    tb.XCON.PLOGIC.ras_bar \
+    {tb.XCON.PLOGIC.read_data[15:0]} \
+    tb.XCON.PLOGIC.ready \
+    tb.XCON.PLOGIC.reset \
+    {tb.XCON.PLOGIC.state[3:0]}
+
+group using {Group 4}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+
+group using Testbench
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    tb.test_pattern_injection_done
+
+group using {CMD FIFO}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    {tb.XCON.FIFO_CMD.wr_ptr_gray_ss[5:0]} \
+    {tb.XCON.FIFO_CMD.wr_ptr_gray_s[5:0]} \
+    {tb.XCON.FIFO_CMD.wr_ptr_gray[5:0]} \
+    {tb.XCON.FIFO_CMD.wr_ptr_bin_ss[5:0]} \
+    {tb.XCON.FIFO_CMD.wr_ptr_bin[5:0]} \
+    tb.XCON.FIFO_CMD.wenq \
+    tb.XCON.FIFO_CMD.we \
+    tb.XCON.FIFO_CMD.wclk \
+    tb.XCON.FIFO_CMD.reset \
+    tb.XCON.FIFO_CMD.renq \
+    tb.XCON.FIFO_CMD.re \
+    {tb.XCON.FIFO_CMD.rd_ptr_gray_ss[5:0]} \
+    {tb.XCON.FIFO_CMD.rd_ptr_gray_s[5:0]} \
+    {tb.XCON.FIFO_CMD.rd_ptr_gray[5:0]} \
+    {tb.XCON.FIFO_CMD.rd_ptr_bin_ss[5:0]} \
+    {tb.XCON.FIFO_CMD.rd_ptr_bin[5:0]} \
+    tb.XCON.FIFO_CMD.rclk \
+    {tb.XCON.FIFO_CMD.full_check[5:0]} \
+    tb.XCON.FIFO_CMD.full_bar \
+    tb.XCON.FIFO_CMD.full \
+    {tb.XCON.FIFO_CMD.fillcount[5:0]} \
+    {tb.XCON.FIFO_CMD.fifo[0:31]} \
+    tb.XCON.FIFO_CMD.empty_bar \
+    tb.XCON.FIFO_CMD.empty \
+    tb.XCON.FIFO_CMD.e \
+    {tb.XCON.FIFO_CMD.data_out[33:0]} \
+    {tb.XCON.FIFO_CMD.data_in[33:0]}
+
+#
+# cursors
+#
+set time 703247300ps
+if {[catch {cursor new -name  TimeA -time $time}] != ""} {
+    cursor set -using TimeA -time $time
+}
+
+#
+# mmaps
+#
+mmap new -reuse -name {Boolean as Logic} -radix %b -contents {
+{%c=FALSE -edgepriority 1 -shape low}
+{%c=TRUE -edgepriority 1 -shape high}
+}
+mmap new -reuse -name {Example Map} -radix %x -contents {
+{%b=11???? -bgcolor orange -label REG:%x -linecolor yellow -shape bus}
+{%x=1F -bgcolor red -label ERROR -linecolor white -shape EVENT}
+{%x=2C -bgcolor red -label ERROR -linecolor white -shape EVENT}
+{%x=* -label %x -linecolor gray -shape bus}
+}
+
+#
+# Waveform windows
+#
+if {[catch {window new WaveWindow -name "Waveform 1" -geometry 1581x1014+246+44}] != ""} {
+    window geometry "Waveform 1" 1581x1014+246+44
+}
+window target "Waveform 1" on
+waveform using {Waveform 1}
+waveform sidebar visibility partial
+waveform set \
+    -primarycursor TimeA \
+    -signalnames name \
+    -signalwidth 175 \
+    -units ps \
+    -valuewidth 135
+cursor set -using TimeA -time 703,247,300ps
+waveform baseline set -time 703,262,723ps
+
+set groupId [waveform add -groups {{Memory Interface}}]
+waveform hierarchy collapse $groupId
+
+set groupId [waveform add -groups {{Memory Controller}}]
+waveform hierarchy collapse $groupId
+
+set groupId [waveform add -groups Testbench]
+waveform hierarchy collapse $groupId
+
+set groupId [waveform add -groups {{Processing Logic}}]
+waveform hierarchy collapse $groupId
+
+set groupId [waveform add -groups {{CMD FIFO}}]
+waveform hierarchy collapse $groupId
+
+
+waveform xview limits 0 709648000ps
+
+#
+# Console window
+#
+console set -windowname Console
