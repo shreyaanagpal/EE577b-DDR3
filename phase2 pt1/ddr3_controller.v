@@ -3,7 +3,7 @@ module ddr3_controller(
    // Outputs
    dout, raddr, fillcount, notfull, ready, ck_pad, ckbar_pad,
    cke_pad, csbar_pad, rasbar_pad, casbar_pad, webar_pad, ba_pad,
-   a_pad, dm_pad, odt_pad,resetbar_pad, 
+   a_pad, dm_pad, odt_pad,resetbar_pad, validout, 
    // Inouts
    dq_pad, dqs_pad, dqsbar_pad,
    // Inputs
@@ -49,6 +49,9 @@ module ddr3_controller(
    inout [1:0] 	 dqsbar_pad;
    output [1:0]  dm_pad;
    output 		 odt_pad;
+   output validout;
+   
+   reg validout;
    
    /*autowire*/
    // Beginning of automatic wires (for undeclared instantiated-module outputs)
@@ -104,8 +107,7 @@ module ddr3_controller(
 	       ck_i <= 0;
 	   else
 	       ck_i <= ~ck_i;  // 250 MHz Clock
-
-		   
+	   
 assign resetbar_i = ~reset && reset_out;
 ///////////////////////////////task2: determine the FIFO connections ///////////////////////////////////
 // Command FIFO						  

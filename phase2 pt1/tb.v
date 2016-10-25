@@ -386,7 +386,7 @@ module tb();
 						 .dout					(dout[15:0]),
 						 .raddr					(raddr[25:0]),
 						 .fillcount				(fillcount[5:0]),
-						 //.validout				(validout), //We do not have this port
+						 .validout				(validout), //We do not have this port
 						 //.empty			    (notfull),// we do not have empty.
 						 .notfull			    (notfull),
 						 .ready					(ready),
