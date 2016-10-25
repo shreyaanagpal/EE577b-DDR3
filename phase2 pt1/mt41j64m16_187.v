@@ -40,7 +40,7 @@ module mt41j64m16_187(
     input webar;
     input [1:0] dm;
     input [2:0] ba;
-    input [13:0] a;
+    input [12:0] a;
     inout [15:0] dq;
       reg [15:0] den_dq;
       assign dq = den_dq;

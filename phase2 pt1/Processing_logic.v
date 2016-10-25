@@ -34,19 +34,19 @@ module Processing_logic(
    //Timing Parameters (in clock cycles) 
    //Assumption is DDR3-1000 (MT41J64M16, speed grade -187)
    //See spec p1 Table 1, p2 Figure 1, p72 Table 51, p77 Table 54 
-   parameter CK   = 1.87,    // Clock Period (min) (ns) 
-             CL   = 8,      // CAS Latency  (in Tck)
+   parameter CK   = 3.2,    // Clock Period (min) (ns) 
+             CL   = 10,      // CAS Latency  (in Tck)
              AL   = 6,      // Posted CAS# Additive Latency (in Tck), can be 0, CL-1, CL-2
-             CWL  = 8,      // CAS Write Latency (assume same as CL?)
-             RL   = 14,     // Min. delay between READ cmd and data being available on DQ (Read Latency = CL + AL)
-             WL   = 14,     // Min. delay between WRITE cmd and data being latched in on DQ (Write Latency = CWL + AL)
-             tRCD = 8,      // Min. delay between row strobe and column strobe (Row-to-Column) (in Tck)
-             tRRD = 4, 	    // Min. delay between successive row activation (Row-to-Row Delay) (in Tck)
-             tCCD = 4,      // Min. delay between successive read or write commands (Command-to-Command Delay) (in Tck)
-             tFAW = 20,     // Maximum of 4 banks may be activated during this time (note: depends on page size, see Table 54) (in Tck)
-             tRTP = 4,      // Min. delay between completion of read and begin of a precharge (Read-To-Precharge) (in Tck)
-             tRP  = 8,      // Min. delay between completion of precharge and issue of a new command to same bank (in Tck)
-             tRAS = 20;     // Min. delay between ACT cmd and PRECHARGE
+             CWL  = 10,      // CAS Write Latency (assume same as CL?)
+             RL   = AL + CL,     // Min. delay between READ cmd and data being available on DQ (Read Latency = CL + AL)
+             WL   = AL + CWL,     // Min. delay between WRITE cmd and data being latched in on DQ (Write Latency = CWL + AL)
+             tRCD = 16,      // Min. delay between row strobe and column strobe (Row-to-Column) (in Tck)
+             tRRD = 8, 	    // Min. delay between successive row activation (Row-to-Row Delay) (in Tck)
+             tCCD = 8,      // Min. delay between successive read or write commands (Command-to-Command Delay) (in Tck)
+             tFAW = 40,     // Maximum of 4 banks may be activated during this time (note: depends on page size, see Table 54) (in Tck)
+             tRTP = 8,      // Min. delay between completion of read and begin of a precharge (Read-To-Precharge) (in Tck)
+             tRP  = 16,      // Min. delay between completion of precharge and issue of a new command to same bank (in Tck)
+             tRAS = 40;     // Min. delay between ACT cmd and PRECHARGE
 
    //DDR3 state machine encoding -- see spec p.11 for FSM architecture
    parameter IDLE         = 4'd0,
@@ -78,7 +78,7 @@ module Processing_logic(
    
    input 	 clk, ck, reset, ready;
    input 	 CMD_empty, RETURN_full;
-   input [32:0]	 CMD_data_out;
+   input [33:0]	 CMD_data_out;
    input [15:0]  DATA_data_out;
    input [15:0]  DQ_in;
    input [1:0]   DQS_in;
@@ -86,13 +86,13 @@ module Processing_logic(
    output reg CMD_get;
    output reg DATA_get;
    output reg RETURN_put;
-   output reg  [24:0] RETURN_address;
-   output wire [15:0] RETURN_data;
+   output reg  [25:0] RETURN_address;
+   output reg [15:0] RETURN_data;
    output reg cs_bar;
    output reg ras_bar;
    output reg cas_bar;
    output reg we_bar;
-   output reg [1:0] BA;
+   output reg [2:0] BA;
    output reg [12:0] A;
    output reg [1:0] DM;
    output reg [15:0] DQ_out;
@@ -103,19 +103,25 @@ module Processing_logic(
    reg [3:0] state;
    reg listen;
    reg DM_flag;
-   integer i;
+   integer i,j;
    reg [2:0] Pointer;
-   reg read;
-   reg write;
-  
+   //reg read;
+   //reg write;
+  wire [1:0] sz;
+  wire [ 2:0] op;
+  wire [2:0] cmd;
+  wire [25:0] addr;
+  wire [15:0] read_data;
   //component instantiation
-  ddr2_ring_buffer8 ring_buffer(RETURN_data, listen, DQS_in[0], Pointer[2:0], DQ_in, reset);
+  ddr3_ring_buffer8 ring_buffer(read_data, listen, DQS_in[0], Pointer[2:0], DQ_in, reset);
 
 //----------------------Real Code Begins-----------------//
+assign {cmd, sz, op, addr} = CMD_data_out;
 
 //FSM State Memory, NSL, OFL
-always @(posedge clk) begin
-  if(reset) begin 
+always @(posedge clk) 
+begin
+  if(reset == 1) begin 
     state          <= IDLE;
     CMD_get        <= 0;
     DATA_get       <= 0;
@@ -130,37 +136,41 @@ always @(posedge clk) begin
     DM             <= 0;
     DM_flag        <= 0;
     DQ_out         <= 0;
-    DQS_out        <= 0;
+    DQS_out        <= 2'b10;
     ts_con         <= 0;
     listen         <= 0;
-    read           <= 0;
-    write          <= 0;
+    //read           <= 0;
+    //write          <= 0;
   end
   else
+  begin
     //default output values
     CMD_get    <= 1'b0;
     DATA_get   <= 1'b0;
     RETURN_put <= 1'b0;
-
+	DQS_out <= ~ DQS_out ;
     case (state)
       IDLE        : begin
                       listen <= 0;
-                      {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b1111; //is this idle???
+                      {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0111; //is this idle???
                       if (ready==1)  //initialization complete 
                       begin 
-                        if (CMD_empty==0) //active-low!
+                        if (CMD_empty==1) //active-low!
                           state <= IDLE;
-                        else //CMD FIFO not empty
-                          begin
+                        else if( RETURN_full == 0)
+						  begin
                           CMD_get <= 1'b1; 
                           state   <= DECODE;
+						  i <= 0;
+						  j <= 0;
                           end
                       end
                     end
                       
       DECODE      : begin
                     //Phase 2 pt.1 only supports NOP, ACT, SCR, SCW
-                    case(CMD_data_out) //What bits dictate the command???
+					CMD_get <= 0;
+                    case(cmd) //What bits dictate the command???
 
                       CMD_NOP  : begin
                                    state <= IDLE;
@@ -169,12 +179,12 @@ always @(posedge clk) begin
 
                       CMD_SCR  : begin
                                    state <= ACTIVATE;
-                                   read  <= 1;                   
+                                   //read  <= 1;                   
                                  end
 
                       CMD_SCW  : begin
                                    state <= ACTIVATE;
-                                   write <= 1;            
+                                  // write <= 1;            
                                  end
                       CMD_BLR  : begin end  
                       CMD_BLW  : begin end
@@ -190,24 +200,84 @@ always @(posedge clk) begin
       MRS_MPR     : begin end 
       ZQ_CAL      : begin end 
       ACTIVATE    : begin 
-                  // {cs_bar, ras_bar, cas_bar, we_bar} <= ;
+                 
+						state <= BANK_ACTIVE;
+						{cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0011;
                     end 
-      BANK_ACTIVE : begin end 
+      BANK_ACTIVE : begin
+					 
+					 BA <= addr[25:23];
+					 A <= addr[22:10];
+					 if(cmd == CMD_SCR && i == tRCD)
+					 begin
+						state <= READ;
+						{cs_bar, ras_bar, cas_bar, we_bar} <=4'b0101 ;
+						i <= 0;
+					end
+					 if(cmd == CMD_SCW && i == tRCD)
+					 begin
+						state <= WRITE;
+						{cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0100;
+						i <= 0;
+					end
+					 i <= i+ 1;
+					end 
       ACTIVE_PD   : begin end 
       READ        : begin
-                  // {cs_bar, ras_bar, cas_bar, we_bar} <= ;
-                    end 
+						if(j == 0)
+						begin
+							
+							BA <= addr[25:23];
+							A <= addr[9:0];
+							//CMD_get <= 1;
+							i <= i+1;
+						end
+						if(i == RL -1)
+							RETURN_put <= 1'b1;
+						if(i == RL)
+						begin
+							RETURN_data <= {addr, read_data};
+							RETURN_put <= 0;
+							state <= IDLE;
+							i <= 0;
+						end
+					   j <= j+1;
+					//  CMD_get <= 0;
+					//  if( j == tRRD)
+					//  begin
+					//		{cs_bar, ras_bar, cas_bar, we_bar} <=4'b0101 ;
+					//		BA <= addr[25:23];
+					//		A <= addr[9:0];
+					//		CMD_get <= 1;
+					//		k <= k+1;
+					//	end
+					//	if(k == RL)
+					//	begin
+					//		RETURN_data <= {addr, DQ_in};
+					//		k <= 0;
+					//		j <= 0;
+						end
+						
+                    
       WRITE       : begin 
-                  // {cs_bar, ras_bar, cas_bar, we_bar} <= ;
+                  
+						BA <= addr[25:23];
+						A <= addr[9:0];
+						i <= i+1;
+						if(i == WL)
+						begin
+							state <= IDLE;
+							i <= 0;
+						end
                     end 
       READ_AP     : begin end 
       WRITE_AP    : begin end 
       PRECHARGE   : begin end 
       default: state <= IDLE;
  
-    endcase 
+	endcase 
+  end
 end
-
 //FSM OFL
 //always @(current_state) 
 //begin
@@ -222,8 +292,9 @@ end
 
 always @(negedge clk)
   begin
-    DQ_out <= DATA_data_out;
-    if(DM_flag)
+    
+    if((state == WRITE) && (i==WL -1 ))
+		DQ_out <= DATA_data_out;
         DM <= 2'b00;
     else
         DM <= 2'b11;	

@@ -2,21 +2,25 @@
 // There is a NOP command issued 1 DDR clock cycle after most commands
 // More information about each stage is in the Verilog code below
 
-`define S_NOP1	19'd312000 // Send NOP with CKE low
-`define S_CKE	19'd312500 // Set CKE High
-`define S_NOP1a	19'd312502
-`define S_PRE1	19'd312618 // txpr and MR2
-`define S_NOP2	19'd312620 // NOP after MR2
-`define S_EMRS2	19'd312632 // tMRD Set MR3
-`define S_NOP3 	19'd312634// NOP after MR3
-`define S_EMRS3	19'd312646 // Set MR1
-`define S_NOP4	19'd312648 // NOP after MR1
-`define S_DLL	19'd312660 // Set MR0
-`define S_NOP5	19'd312662 // NOP after MR0
-`define S_DLLR	19'd312802 // tMOD for ZQ Cali
-`define S_NOP6	19'd312804 // NOP after Calibration
-`define S_DONE	19'd313828 // Memory is ready
-
+`define S_RESET	19'd125000 // Send NOP with CKE low
+`define S_NOP1	19'd437500// Send NOP with CKE low
+`define S_CKE	19'd438002 // Set CKE High
+`define S_NOP1a	19'd438004
+`define S_PRE1	19'd438120 // txpr and MR2
+`define S_NOP2	19'd438122 // NOP after MR2
+`define S_EMRS2	19'd438134 // tMRD Set MR3
+`define S_NOP3 	19'd438136// NOP after MR3
+`define S_EMRS3	19'd438146 // Set MR1
+`define S_NOP4	19'd438148 // NOP after MR1
+`define S_DLL	19'd438162 // Set MR0
+`define S_NOP5	19'd438164 // NOP after MR0
+`define S_DLLR	19'd438304 // tMOD for ZQ Cali
+`define S_NOP6	19'd438306 // NOP after Calibration
+`define S_DONE	19'd439330 // Memory is ready
+`define MR0		19'd439502
+`define NOP		19'd439504
+`define MR1		19'd439518
+`define NOP1	19'd439520
 /////////////////////////////////////////////////////////
 
 
@@ -24,23 +28,24 @@ module ddr3_init_engine(
    // Outputs
    ready, csbar, rasbar, casbar, webar, ba, a, odt, ts_con, cke,
    // Inputs
-   clk, resetbar, init, ck, 
+   clk, reset, init, ck, reset_out
    );
 
 
-input clk, resetbar, init, ck;
-output ready, csbar, rasbar, casbar, webar, odt, ts_con, cke;
+input clk, reset, init, ck;
+output ready, csbar, rasbar, casbar, webar, odt, ts_con, cke, reset_out;
 output [2:0] ba;
-output [13:0] a;
+output [12:0] a;
 
 reg ready;
+reg reset_out;
 reg cke;
 reg csbar;
 reg rasbar;
 reg casbar;
 reg webar;
 reg [2:0] ba;
-reg [13:0] a;
+reg [12:0] a;
 reg odt;
 reg [15:0] dq_out;
 reg [1:0] dqs_out;
@@ -49,14 +54,15 @@ reg ts_con;
 reg INIT, RESET;
    
 reg [18:0]  counter;
+integer counter1;
 reg flag;
 
 always @(posedge clk)
 begin
 	INIT <= init;
-	RESET <= resetbar;
+	RESET <= reset;
 
-	if (RESET==0)
+	if (RESET==1)
 	begin
 		flag <= 0;
 		cke <= 0;
@@ -68,21 +74,30 @@ begin
 		rasbar <= 0;
 		webar <= 0;
 		ready <= 0;
+		reset_out <= 0;
 	end
 	else if (flag == 0 && INIT == 1)
 	begin
 		// On INIT signal, set a flag to start the initialization routine and clear the counter
 		flag <= 1;
 		counter <= 0;
+		counter1 <= 0;
 	end
 	else if (flag == 1)
 	begin
-		counter <= counter + 1;
+		
+
+			counter <= counter + 1;
+		
+			
+			
 		case (counter)
 		// Use a case statement to match counter values to specific commands issued to the DDR2 chip
 		// TASK: Fill in the correct counter values in the definitions at the beginning of the file
 		// and fill in any missing signal values to set up the DDR2 chip correctly in the following code
-
+	
+	
+			`S_RESET:	reset_out <= 1'b1;
 		// INIT Waits for 500 microseconds
         	`S_NOP1:  begin
 			{csbar, rasbar, casbar, webar} <= 4'b0111; // NOP command
@@ -137,7 +152,7 @@ begin
 					a[2] <= 0;
 					a[6] <= 0;
 					a[5:3] <=3'b010;
-					a[13:7] <= 7'b0000000;
+					a[12:7] <= 7'd0;
 					a[4:3] <= 2'b10;
 					
 	                end
@@ -158,7 +173,7 @@ begin
 				   a[7] <= 0;
 				   a[8] <= 1;
 				   a[11:9] <= 3'b010;
-				   a[13:12]<= 2'b00;
+				   a[12]<= 0;
 	                end
                 `S_NOP5: {csbar, rasbar, casbar, webar} <= 4'b0111 ; // NOP command
 
@@ -180,8 +195,30 @@ begin
      // ----------------------------------------------------------
      	`S_DONE: begin
 	             {csbar, rasbar, casbar, webar} <= 4'b0111; // Finally done - Just send NOPs
-				ready <= 1; // done
+				//ready <= 1; // done
      	        end
+		`MR0:
+			begin
+				{csbar, rasbar,casbar,webar} <= 4'b0000; 
+				ba <= 3'b000;
+				a[2:0] <= 3'b000;
+				a[6:4] <= 3'b001;
+				a[7] <= 0;
+				a[1:0] <= 2'b01;
+			end
+		`NOP: 
+				{csbar, rasbar,casbar,webar} <= 4'b0111;
+		`MR1:
+			begin
+				{csbar, rasbar,casbar,webar} <= 4'b0000;
+				ba <= 3'b001;
+				a[4:3] <= 2'b01;
+			end
+		`NOP1: 
+			begin
+				{csbar, rasbar,casbar,webar} <= 4'b0111;	
+				ready <= 1;
+			end
 	default: begin
 		flag <= 1;
              end

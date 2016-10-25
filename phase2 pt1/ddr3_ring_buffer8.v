@@ -11,7 +11,7 @@
 module ddr3_ring_buffer8(dout,listen,strobe,readPtr,din,reset);
    input listen;  // A cycle long pulse after which ring buffer would start paying attention towards the incoming strobe
    input strobe;  // After listen the ring buffer would capture 4 data at every edges of strobe
-   input `reset;
+   input reset;
    input [15:0]  din;
    input [2:0] 	 readPtr; // Read pointer, the contol logic should provide the read pointer
    output [15:0] dout;

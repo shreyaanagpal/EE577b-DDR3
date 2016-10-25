@@ -16,7 +16,7 @@ module SSTL18DDR3INTERFACE(/*autoarg*/
    output    casbar_pad;
    output    webar_pad;
    output [2:0] ba_pad;
-   output [13:0] a_pad;
+   output [12:0] a_pad;
    inout [15:0]  dq_pad;
    inout [1:0] 	 dqs_pad;
    inout [1:0] 	 dqsbar_pad;
@@ -32,7 +32,7 @@ module SSTL18DDR3INTERFACE(/*autoarg*/
    input 		 casbar_i;
    input 		 webar_i;
    input [2:0] 	 ba_i;
-   input [13:0]  a_i;
+   input [12:0]  a_i;
    input [15:0]  dq_i;
    input [1:0] 	 dqs_i;
    input [1:0] 	 dqsbar_i;
@@ -44,7 +44,7 @@ module SSTL18DDR3INTERFACE(/*autoarg*/
    input 		 resetbar_i;
 
 
-   wire [13:0]		 a_o;
+   wire [12:0]		 a_o;
    wire [2:0] 			 ba_o;
    wire [1:0] 			 dm_o;
    
@@ -74,7 +74,7 @@ module SSTL18DDR3INTERFACE(/*autoarg*/
 
 
    generate
-	  for (i=0; i < 14; i=i+1) begin : A
+	  for (i=0; i < 13; i=i+1) begin : A
 		 SSTL18DDR3 sstl_a (.Z(a_o[i]), .PAD(a_pad[i]), .A(a_i[i]), .RI(1'b0), .TS(1'b1));
 	  end
    endgenerate

@@ -51,7 +51,7 @@
 `include "/home/scf-22/ee577/NCSU45PDK/FreePDK45/osu_soc/lib/files/gscl45nm.v"
 
 module tb();
-`define IPNUT_FILE_NAME "ddr3_test_pattern.dat" //Please MANUALLY modify the test pattern name
+`define IPNUT_FILE_NAME "ddr3_test_pattern5.dat" //Please MANUALLY modify the test pattern name
 `define TRACE_FILE_NAME "ddr3_test.trc"  //Not used 
 `define DUMP_FILE_NAME  "ddr3_out.dump" // Please MANUALLY modify the dump file name
 `define EOF 32'hFFFF_FFFF
@@ -386,7 +386,7 @@ module tb();
 						 .dout					(dout[15:0]),
 						 .raddr					(raddr[25:0]),
 						 .fillcount				(fillcount[5:0]),
-						 .validout				(validout), //We do not have this port
+						 //.validout				(validout), //We do not have this port
 						 //.empty			    (notfull),// we do not have empty.
 						 .notfull			    (notfull),
 						 .ready					(ready),
