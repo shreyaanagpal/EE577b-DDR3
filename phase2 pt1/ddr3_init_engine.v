@@ -17,10 +17,10 @@
 `define S_DLLR	19'd438304 // tMOD for ZQ Cali
 `define S_NOP6	19'd438306 // NOP after Calibration
 `define S_DONE	19'd439330 // Memory is ready
-`define MR0		19'd439502
-`define NOP		19'd439504
-`define MR1		19'd439518
-`define NOP1	19'd439520
+//`define MR0		19'd439502
+//`define NOP		19'd439504
+//`define MR1		19'd439518
+//`define NOP1	19'd439520
 /////////////////////////////////////////////////////////
 
 
@@ -195,30 +195,30 @@ begin
      // ----------------------------------------------------------
      	`S_DONE: begin
 	             {csbar, rasbar, casbar, webar} <= 4'b0111; // Finally done - Just send NOPs
-				//ready <= 1; // done
+				ready <= 1; // done
      	        end
-		`MR0:
-			begin
-				{csbar, rasbar,casbar,webar} <= 4'b0000; 
-				ba <= 3'b000;
-				a[2:0] <= 3'b000;
-				a[6:4] <= 3'b001;
-				a[7] <= 0;
-				a[1:0] <= 2'b01;
-			end
-		`NOP: 
-				{csbar, rasbar,casbar,webar} <= 4'b0111;
-		`MR1:
-			begin
-				{csbar, rasbar,casbar,webar} <= 4'b0000;
-				ba <= 3'b001;
-				a[4:3] <= 2'b01;
-			end
-		`NOP1: 
-			begin
-				{csbar, rasbar,casbar,webar} <= 4'b0111;	
-				ready <= 1;
-			end
+	//	`MR0:
+	//		begin
+	//			{csbar, rasbar,casbar,webar} <= 4'b0000; 
+	//			ba <= 3'b000;
+	//			a[2:0] <= 3'b000;
+	//			a[6:4] <= 3'b001;
+	//			a[7] <= 0;
+	//			a[1:0] <= 2'b01;
+	//		end
+	//	`NOP: 
+	//			{csbar, rasbar,casbar,webar} <= 4'b0111;
+	//	`MR1:
+	//		begin
+	//			{csbar, rasbar,casbar,webar} <= 4'b0000;
+	//			ba <= 3'b001;
+	//			a[4:3] <= 2'b01;
+	//		end
+	//	`NOP1: 
+	//		begin
+	//			{csbar, rasbar,casbar,webar} <= 4'b0111;	
+	//			ready <= 1;
+	//		end
 	default: begin
 		flag <= 1;
              end

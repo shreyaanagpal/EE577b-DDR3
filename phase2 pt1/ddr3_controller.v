@@ -94,18 +94,25 @@ module ddr3_controller(
    wire [33:0] CMD_data_in, CMD_data_out;
    wire [41:0] RETURN_data_in, RETURN_data_out;
    wire CMD_empty, CMD_full, RETURN_empty, RETURN_full;
-   wire IN_put, IN_get, CMD_put, CMD_get, RETURN_put, RETURN_get;
+   wire IN_put, IN_get, CMD_get, RETURN_put, RETURN_get;
+   reg CMD_put;
    wire DATA_empty;
   
    // CK divider
    always @(posedge clk) 
      if(reset==1)
+		begin
          ck_i <= 0;
+		 CMD_put <= 0;
+		end
      else
-       ck_i <= ~ck_i;  // 312 MHz Clock (625/2 MHz)
+		begin
+			ck_i <= ~ck_i; 
+			if(ready == 1)
+			CMD_put <= 1'b1;
+		end
+		// 312 MHz Clock (625/2 MHz)
 assign resetbar_i = ~reset && reset_out;
-
-assign CMD_put = 1'b1; //workaround for lack of WE. FIXME!!!
 
 ///////////////////////////////task2: determine the FIFO connections ///////////////////////////////////
 // Command FIFO						  
@@ -194,7 +201,7 @@ Processing_logic PLOGIC (
                                   .ts_con         (ts_i),
                                   // Inputs
                                   .clk            (clk),
-                                  .ck             (ck),
+                                  .ck             (ck_i),
                                   .reset          (reset),
                                   .ready          (ready),
                                   .CMD_empty      (CMD_empty),

@@ -126,7 +126,7 @@ assign row_addr  = addr[22:10];
 assign col_addr  = addr[9:0];
 
 //FSM State Memory, NSL, OFL
-always @(posedge clk) 
+always @(negedge clk) 
 begin
   if(reset == 1) begin 
     state          <= IDLE;
@@ -134,16 +134,16 @@ begin
     DATA_get       <= 0;
     RETURN_put     <= 0; 
     RETURN_address <= 0;
-    cs_bar         <= 1;
+    cs_bar         <= 0;
     ras_bar        <= 1;
     cas_bar        <= 1;
     we_bar         <= 1;
     BA             <= 0;
     A              <= 0;
-    DM             <= 0;
+    //DM             <= 0;
     DM_flag        <= 0;
     DQ_out         <= 0;
-    DQS_out        <= 2'b10;
+   // DQS_out        <= 2'b10;
     ts_con         <= 0;
     listen         <= 0;
   end
@@ -161,21 +161,23 @@ begin
                       {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0111; //is this idle???
                       if (ready==1)  //initialization complete 
                       begin 
-                        /*if (CMD_empty==1) //Connected to empty_bar: 0 means empty!
+                        if (CMD_empty==0) //Connected to empty_bar: 0 means empty!
                           state <= IDLE;
-                        else if(RETURN_full == 0)
-		          begin
-                          CMD_get <= 1'b1; */
+                        else if(RETURN_full == 1) // Returnfull is fullbar ; 1 mean not full
+							begin
+                          CMD_get <= 1'b1;
+							@(posedge clk);
+							    CMD_get <= 0;
                           state   <= DECODE;
-			  i <= 0;
-			  j <= 0;
-                        //  end
+							i <= 0;
+							j <= 0;
+                          end
                       end
                     end
                       
-      DECODE      : begin
+      DECODE 	  : begin
                     //Phase 2 pt.1 only supports NOP, ACT, SCR, SCW
-	     	    CMD_get <= 0;
+					
 
                     case(CMD_data_out[33:31]) 
                       CMD_NOP  : begin
@@ -185,11 +187,15 @@ begin
 
                       CMD_SCR  : begin
                                    state <= ACTIVATE;
+								   BA       <= bank_addr;
+									A[22:10] <= row_addr; 
                                    //read  <= 1;                   
                                  end
 
                       CMD_SCW  : begin
                                    state <= ACTIVATE;
+								   BA       <= bank_addr;
+									A[22:10] <= row_addr;
                                   // write <= 1;            
                                  end
                       CMD_BLR  : begin end  
@@ -208,16 +214,16 @@ begin
 
       ACTIVATE    : begin 
 	       	      state    <= BANK_ACTIVE;
-                      BA       <= bank_addr;
-                      A[22:10] <= row_addr; 
+                      
                       i <= i+1;
                       j <= j+1; //timing counter starts now.
 		      {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0011;
                     end 
 
       BANK_ACTIVE : begin
-                    BA <= 'bz; //tri-state util tRCD
-                    A  <= 'bz; //tri-state until tRCD
+                    //BA <= 'bz; //tri-state util tRCD
+                    //A  <= 'bz; //tri-state until tRCD
+					 {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0111;
                       if(cmd == CMD_SCR && i == tRCD-1)
                       begin
                         state  <= READ;
@@ -304,7 +310,7 @@ end
 //end
 
 
-always @(negedge clk)
+always @(posedge clk)
   begin
     if((state == WRITE) && (i==WL -1 )) begin
 	DQ_out <= DATA_data_out;
