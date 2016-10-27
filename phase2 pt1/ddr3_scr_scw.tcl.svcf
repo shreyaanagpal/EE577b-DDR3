@@ -1,10 +1,10 @@
-# SimVision Command Script (Tue Oct 25 08:56:15 PDT 2016)
+# SimVision Command Script (Thu Oct 27 16:03:28 PDT 2016)
 #
 # Version 08.20.p001
 #
 # You can restore this configuration with:
 #
-#     ncsim -STATUS -NOCOPYRIGHT -MESSAGES -NCFATAL INVSUP -NOWARN DLBRLK -TCL -NOLOG -NOKEY -INPUT ./scripts/runscript.tcl -GUI tb -input /home/scf-23/nhourani/ee577b/project/phase2/ddr3_scr_scw.tcl
+#     ncsim -STATUS -NOCOPYRIGHT -MESSAGES -NCFATAL INVSUP -NOWARN DLBRLK -TCL -NOLOG -NOKEY -INPUT ./scripts/runscript.tcl -GUI tb -tcl -update -input /home/scf-23/nhourani/RTL_folder_3/ddr3_scr_scw.tcl
 #
 
 
@@ -45,7 +45,7 @@ preferences set toolbar-WaveZoom-WaveWindow {
 #
 
 database require simulator -hints {
-	simulator "ncsim -STATUS -NOCOPYRIGHT -MESSAGES -NCFATAL INVSUP -NOWARN DLBRLK -TCL -NOLOG -NOKEY -INPUT ./scripts/runscript.tcl -GUI tb -input ddr3_scr_scw.tcl"
+	simulator "ncsim -STATUS -NOCOPYRIGHT -MESSAGES -NCFATAL INVSUP -NOWARN DLBRLK -TCL -NOLOG -NOKEY -INPUT ./scripts/runscript.tcl -GUI tb -tcl -update -input ddr3_scr_scw.tcl"
 }
 
 #
@@ -67,7 +67,9 @@ group insert \
     tb.c0_ck_pad \
     {tb.c0_a_pad[12:0]} \
     {tb.c0_ba_pad[2:0]} \
+    tb.c0_rasbar_pad \
     tb.c0_casbar_pad \
+    tb.c0_webar_pad \
     tb.c0_ckbar_pad \
     tb.c0_cke_pad \
     tb.c0_csbar_pad \
@@ -76,9 +78,7 @@ group insert \
     {tb.c0_dqs_pad[1:0]} \
     {tb.c0_dqsbar_pad[1:0]} \
     tb.c0_odt_pad \
-    tb.c0_rasbar_pad \
-    tb.c0_resetbar_pad \
-    tb.c0_webar_pad
+    tb.c0_resetbar_pad
 
 group using {Memory Controller}
 group set -overlay 0
@@ -104,6 +104,9 @@ group set -comment {}
 group clear 0 end
 
 group insert \
+    {tb.XCON.PLOGIC.col_addr[9:0]} \
+    {tb.XCON.PLOGIC.row_addr[12:0]} \
+    {tb.XCON.PLOGIC.bank_addr[2:0]} \
     {tb.XCON.PLOGIC.addr[25:0]} \
     {tb.XCON.PLOGIC.CMD_data_out[33:0]} \
     tb.XCON.PLOGIC.cas_bar \
@@ -172,7 +175,7 @@ group insert \
 #
 # cursors
 #
-set time 703247300ps
+set time 703013450ps
 if {[catch {cursor new -name  TimeA -time $time}] != ""} {
     cursor set -using TimeA -time $time
 }
@@ -192,6 +195,21 @@ mmap new -reuse -name {Example Map} -radix %x -contents {
 }
 
 #
+# Design Browser windows
+#
+if {[catch {window new WatchList -name "Design Browser 1" -geometry 885x794+234+234}] != ""} {
+    window geometry "Design Browser 1" 885x794+234+234
+}
+window target "Design Browser 1" on
+browser using {Design Browser 1}
+browser set -signalfilterentry *bank*
+browser set \
+    -scope simulator::tb.XCON.PLOGIC \
+    -signalfilter *col*
+browser yview see simulator::tb.XCON.PLOGIC
+browser timecontrol set -lock 0
+
+#
 # Waveform windows
 #
 if {[catch {window new WaveWindow -name "Waveform 1" -geometry 1581x1014+246+44}] != ""} {
@@ -206,10 +224,38 @@ waveform set \
     -signalwidth 175 \
     -units ps \
     -valuewidth 135
-cursor set -using TimeA -time 703,247,300ps
-waveform baseline set -time 703,262,723ps
+cursor set -using TimeA -time 703,013,450ps
+waveform baseline set -time 703,025,126ps
 
 set groupId [waveform add -groups {{Memory Interface}}]
+set glist [waveform hierarchy contents $groupId]
+set id [lindex $glist 0]
+foreach {name attrs} {
+    simulator::tb.c0_ck_pad {}
+    {simulator::tb.c0_a_pad[12:0]} {-radix %x}
+    {simulator::tb.c0_ba_pad[2:0]} {}
+    simulator::tb.c0_rasbar_pad {}
+    simulator::tb.c0_casbar_pad {}
+    simulator::tb.c0_webar_pad {}
+    simulator::tb.c0_ckbar_pad {}
+    simulator::tb.c0_cke_pad {}
+    simulator::tb.c0_csbar_pad {}
+    {simulator::tb.c0_dm_pad[1:0]} {-radix %b}
+    {simulator::tb.c0_dq_pad[15:0]} {}
+    {simulator::tb.c0_dqs_pad[1:0]} {}
+    {simulator::tb.c0_dqsbar_pad[1:0]} {}
+    simulator::tb.c0_odt_pad {}
+    simulator::tb.c0_resetbar_pad {}
+} {
+    set expected [ join [waveform signals -format fullpath $id] ]
+    if {[string equal $name $expected]} {
+        if {$attrs != ""} {
+            eval waveform format $id $attrs
+        }
+    }
+        set glist [lrange $glist 1 end]
+        set id [lindex $glist 0]
+}
 waveform hierarchy collapse $groupId
 
 set groupId [waveform add -groups {{Memory Controller}}]
@@ -219,13 +265,45 @@ set groupId [waveform add -groups Testbench]
 waveform hierarchy collapse $groupId
 
 set groupId [waveform add -groups {{Processing Logic}}]
+set glist [waveform hierarchy contents $groupId]
+set id [lindex $glist 0]
+foreach {name attrs} {
+    {simulator::tb.XCON.PLOGIC.col_addr[9:0]} {-radix %x}
+    {simulator::tb.XCON.PLOGIC.row_addr[12:0]} {-radix %x}
+    {simulator::tb.XCON.PLOGIC.bank_addr[2:0]} {-radix %x}
+    {simulator::tb.XCON.PLOGIC.addr[25:0]} {}
+    {simulator::tb.XCON.PLOGIC.CMD_data_out[33:0]} {}
+    simulator::tb.XCON.PLOGIC.cas_bar {}
+    simulator::tb.XCON.PLOGIC.ck {}
+    simulator::tb.XCON.PLOGIC.clk {}
+    {simulator::tb.XCON.PLOGIC.cmd[2:0]} {}
+    simulator::tb.XCON.PLOGIC.cs_bar {}
+    simulator::tb.XCON.PLOGIC.i {}
+    simulator::tb.XCON.PLOGIC.j {}
+    simulator::tb.XCON.PLOGIC.listen {}
+    {simulator::tb.XCON.PLOGIC.op[2:0]} {}
+    simulator::tb.XCON.PLOGIC.ras_bar {}
+    {simulator::tb.XCON.PLOGIC.read_data[15:0]} {}
+    simulator::tb.XCON.PLOGIC.ready {}
+    simulator::tb.XCON.PLOGIC.reset {}
+    {simulator::tb.XCON.PLOGIC.state[3:0]} {}
+} {
+    set expected [ join [waveform signals -format fullpath $id] ]
+    if {[string equal $name $expected]} {
+        if {$attrs != ""} {
+            eval waveform format $id $attrs
+        }
+    }
+        set glist [lrange $glist 1 end]
+        set id [lindex $glist 0]
+}
 waveform hierarchy collapse $groupId
 
 set groupId [waveform add -groups {{CMD FIFO}}]
 waveform hierarchy collapse $groupId
 
 
-waveform xview limits 0 709648000ps
+waveform xview limits 0 709344000ps
 
 #
 # Console window
