@@ -124,7 +124,7 @@ assign resetbar_i = ~reset && reset_out;
 				  .data_in      (din),
 				  .we    	(IN_put),
 				  .re		(IN_get),
-				  .data_out	(dout),
+				  .data_out	(dataOut),
 				  .empty_bar	(DATA_empty),
 	  		          .full_bar     (notfull),
 				  .fillcount	(fillcount)
@@ -206,7 +206,7 @@ Processing_logic PLOGIC (
                                   .ready          (ready),
                                   .CMD_empty      (CMD_empty),
                                   .CMD_data_out   (CMD_data_out), 
-                                  .DATA_data_out  (dout),
+                                  .DATA_data_out  (dataOut),
                                   .RETURN_full    (RETURN_full),
                                   .DQS_in         (dqs_i),
                                   .DQ_in          (dq_i)

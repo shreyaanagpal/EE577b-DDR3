@@ -304,9 +304,10 @@ begin
 	   	      i       <= i+1;
 	              BA      <= bank_addr;
 	              A[12:0]  <= {3'b000,col_addr}; //clear top 3 bits!
-                      if(i == (AL+tRTP-1))
+                      if(i == (RL+8+tRTP))
 	                begin
                           state <= PRECHARGE;
+						   listen <= 1;
 		          {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0010;
 	                  i <= 0;
 		          counter <=0;
@@ -338,7 +339,7 @@ begin
 		      else 
 		        {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0100;
        		      
-                      if (i == WL + 4 + tWR)
+                      if (i == WL + 8 + tWR)
        		      begin
        			state <= PRECHARGE;
        			{cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0010;
@@ -351,7 +352,7 @@ begin
       READ_AP     : begin end 
       WRITE_AP    : begin end 
       PRECHARGE   : begin 
-                      listen <= 1; //tell ring buffer to listen
+                     
 	  	      i <= i+1;
 		      if( i > 0) 
 		        {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0111;
@@ -360,6 +361,7 @@ begin
     		      if(i==1)
 			begin
 		  	  state <= IDLE;
+		
 		  	  {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0111;
 			i <= 0;
 			end
