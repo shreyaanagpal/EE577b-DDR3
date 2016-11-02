@@ -44,6 +44,5 @@ probe -create -database ncsim.shm tb -all -memories -depth all
 probe -create -database ncsim.shm tb -all -memories -depth all
 probe -create -database ncsim.shm tb -all -memories -depth all
 probe -create -database ncsim.shm tb -all -memories -depth all
-probe -create -database ncsim.shm tb -all -memories -depth all
 
 simvision -input /home/scf-23/nhourani/RTL_folder_3/ddr3_scr_scw.tcl.svcf
