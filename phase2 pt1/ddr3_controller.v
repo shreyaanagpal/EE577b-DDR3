@@ -90,6 +90,7 @@ module ddr3_controller(
    wire ri_con;
    wire init_odt;
    wire init_ts_con;
+   wire plogic_ts_con;
    wire reset_out;
    wire [33:0] CMD_data_in, CMD_data_out;
    wire [41:0] RETURN_data_in, RETURN_data_out;
@@ -198,7 +199,7 @@ Processing_logic PLOGIC (
                                   .DM             (dm_i),
                                   .DQS_out        (dqs_o),
                                   .DQ_out         (dq_o),
-                                  .ts_con         (ts_i),
+                                  .ts_con         (plogic_ts_con),
                                   // Inputs
                                   .clk            (clk),
                                   .ck             (ck_i),
@@ -218,6 +219,7 @@ Processing_logic PLOGIC (
    assign rasbar_i = (ready) ? rasbar : init_rasbar;
    assign casbar_i = (ready) ? casbar : init_casbar;
    assign webar_i  = (ready) ? webar  : init_webar;
+   assign ts_i     = (ready) ? plogic_ts_con : init_ts_con; 
    assign cke_i	   = init_cke;
    assign odt_i	   = init_odt;
    assign ri_con   = 1;

@@ -47,9 +47,6 @@ reg webar;
 reg [2:0] ba;
 reg [12:0] a;
 reg odt;
-reg [15:0] dq_out;
-reg [1:0] dqs_out;
-reg [1:0] dqsbar_out;   
 reg ts_con;
 reg INIT, RESET;
    
@@ -69,9 +66,10 @@ begin
 		odt <= 0;
 		a <= 0;
 		ba <= 0;
-		ts_con <= 0;
+		ts_con <= 0; //tr-state the DQ/DQS lines
 		csbar <= 0;
 		rasbar <= 0;
+                casbar <= 0;
 		webar <= 0;
 		ready <= 0;
 		reset_out <= 0;
