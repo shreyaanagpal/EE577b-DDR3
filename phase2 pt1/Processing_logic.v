@@ -23,16 +23,19 @@ module Processing_logic(
   //SSTL interface
   input      [15:0] DQ_in,
   input      [1:0]  DQS_in,
+  input      [1:0]  DQS_bar_in,
   output reg        cs_bar,
   output reg        ras_bar, 
   output reg        cas_bar, 
   output reg        we_bar,  
   output reg [15:0] DQ_out,
   output reg [1:0]  DQS_out,
+  output wire [1:0]  DQS_bar_out,
   output reg [2:0]  BA,
   output reg [12:0] A,
   output reg [1:0]  DM, 
-  output reg        ts_con
+  output reg        ts_con,
+  output reg        ri_o
   );
 
   parameter BL = 4'd8; // Burst Length
@@ -125,13 +128,14 @@ module Processing_logic(
                                 .reset(reset));
 
 //----------------------Real Code Begins-----------------//
-assign cmd       = CMD_data_out[33:31];
-assign sz        = CMD_data_out[30:29]; 
-assign op        = CMD_data_out[28:26];
-assign addr      = CMD_data_out[25:0];
-assign bank_addr = addr[25:23];
-assign row_addr  = addr[22:10]; 
-assign col_addr  = addr[9:0];
+assign cmd         = CMD_data_out[33:31];
+assign sz          = CMD_data_out[30:29]; 
+assign op          = CMD_data_out[28:26];
+assign addr        = CMD_data_out[25:0];
+assign bank_addr   = addr[25:23];
+assign row_addr    = addr[22:10]; 
+assign col_addr    = addr[9:0];
+assign DQS_bar_out = ~DQS_out;
 
 //FSM State Memory, NSL, OFL 
 always @(negedge clk, posedge reset) 
@@ -143,7 +147,8 @@ begin
     RETURN_put     <= 0; 
     RETURN_address <= 0;
     listen         <= 0;
-    ts_con         <= 0;
+    ts_con         <= 0; //tri-state active
+    ri_o           <= 0; //receive inhibit active
     cs_bar         <= 0;
     ras_bar        <= 1;
     cas_bar        <= 1; 
@@ -152,6 +157,8 @@ begin
     A[12:0]        <= 13'd0;
     DM[1:0]        <= 2'd0;
     DQ_out[15:0]   <= 16'd0;
+    DQS_out        <= 2'd0;
+    ring_pointer   <= 3'b0;
     i              <= 0;
   end
   else
@@ -163,6 +170,7 @@ begin
     RETURN_put <= 1'b0;
     listen     <= 1'b0;
     ts_con     <= 1'b0; //tri-state by default
+    ri_o       <= 1'b0; //inhibit receiver by default
 	
     case (state)
       IDLE        : begin
@@ -174,10 +182,10 @@ begin
                           state <= IDLE;
                         else if(RETURN_full == 1) // Returnfull is fullbar ; 1 mean not full
 		         begin
-                           CMD_get <= 1'b1;
+                           CMD_get  <= 1'b1;
 		 	   i <= i + 1; 
 			   if(i >= 1)
-			     CMD_get <= 0;
+			     CMD_get  <= 1'b0;
 		           if(i == 2)
 			   begin
 			     state <= DECODE;
@@ -239,7 +247,7 @@ begin
 	            if(i == 1)
 	              begin
 	                state    <= BANK_ACTIVE;
-	                {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0011;
+	                {cs_bar, ras_bar, cas_bar, we_bar} <= ACT; 
 	                i<=0;
 	              end
                     end 
@@ -249,16 +257,17 @@ begin
                     BA <= bank_addr;
                     A  <= row_addr;
 		    if(i>0)
-		      {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0111;
+		      {cs_bar, ras_bar, cas_bar, we_bar} <= NOP; 
 		    else 
-		      {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0011;
+		      {cs_bar, ras_bar, cas_bar, we_bar} <= ACT; 
 		    if(cmd == CMD_SCR && i == tRCD-1)
                       begin
                         BA     <= bank_addr;
                         A[12:0] <= {3'b000,col_addr}; //send column address
                         state  <= READ;
-		        {cs_bar, ras_bar, cas_bar, we_bar} <=4'b0101 ;
+		        {cs_bar, ras_bar, cas_bar, we_bar} <= RD;
                         listen <= 1; //pulse ring buffer to listen to DQ & DQS
+                        ri_o   <= 1; //disable receiver inhibit
                         i <= 0;
                       end
                     if(cmd == CMD_SCW && i == tRCD-1) //counter goes from 0 to tRCD-1 (total of tRCD cycles)
@@ -267,7 +276,7 @@ begin
                         A[12:0] <= {3'b000,col_addr}; //send column address
                         i       <= 0;
 		        state   <= WRITE;
-		        {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0100;
+		        {cs_bar, ras_bar, cas_bar, we_bar} <= WR; 
 		      end
                     end
  
@@ -276,61 +285,66 @@ begin
       READ        : begin
 	   	      i       <= i+1;
 	              BA      <= bank_addr;
-	              A[12:0]  <= {3'b000,col_addr}; //clear top 3 bits!
+	              A[12:0] <= {3'b000,col_addr}; //clear top 3 bits!
+                      ri_o    <= 1;
                       if(i == (RL+8+tRTP))
 	                begin
-                          state <= PRECHARGE;
-		          {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0010;
+                          state <= PRECHARGE; 
+                          ri_o  <= 0; //receiver inhibit
+		          {cs_bar, ras_bar, cas_bar, we_bar} <= PRE; 
 	                  i <= 0;
 	                end
                       else if (i>0) 
-                        {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0111; //NOP
+                        {cs_bar, ras_bar, cas_bar, we_bar} <= NOP; 
 		    end
 				
-                    
       WRITE       : begin
        		      BA      <= addr[25:23];
        		      A[12:0] <= addr[9:0];
-       		      i  <= i+1;
+       		      i       <= i+1;
+                      
+                      //send WRITE command
+                      if(i > 0)
+		        {cs_bar, ras_bar, cas_bar, we_bar} <= NOP; 
+		      else 
+		        {cs_bar, ras_bar, cas_bar, we_bar} <= WR; 
+                       
+                      if (i == WL-3)
+                        DATA_get <= 1'b1;
+                      else
+                        DATA_get <= 1'b0;
  
-                      if(i==WL-3)
-			DATA_get <= 1'b1;
-		      else
-			DATA_get <= 1'b0;
-		      
-                      if(i>=WL-1 && i < BL+WL)
+                      //drive DQS (before DQ) 
+                      if(i>=WL-1 && i <= BL+WL)
 			begin
                          ts_con <= 1; //enable the bus
-	                 DQS_out[1] <= ~ DQS_out[1] ;
-			 DQS_out[0] <= ~ DQS_out[0] ;
+	                 DQS_out[1:0] <= ~ DQS_out[1:0];
                         end
-			else if (CMD_empty == 1
-                        //need to check if we want to write again! (testbench loop)
-			//also dont go to precharge if you still need to write...
 
-                          begin
-                            ts_con <= 0;
-		          end
+                      //drive DQ
+                      if (i>=WL && i < BL+WL-1) 
+                        begin
+		          ts_con <= 1; //enable bus
+                          DQ_out <= DATA_data_out;
+                          DM <= 2'b00;
+                        end
 
-                      if (i>=WL && i < BL+WL) 
-                      begin
-			ts_con <= 1; //enable bus
-                        DQ_out <= DATA_data_out;
-                        DM <= 2'b00;
-                      end
+		//	else if (CMD_empty == 1)
+                //        //need to check if we want to write again! (testbench loop)
+		//	//also dont go to precharge if you still need to write...
+                //          begin
+                //            ts_con <= 0;
+		//          end
 
-                      if(i > 0)
-		        {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0111;
-		      else 
-		        {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0100;
-       		      
+       		      //issue precharge 
                       if (i == WL + 8 + tWR)
        		      begin
        			state <= PRECHARGE;
-       			{cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0010;
+       			{cs_bar, ras_bar, cas_bar, we_bar} <= PRE; 
        			i <= 0;
        			DQS_out <= 2'b00;
        		      end
+
                     end 
 
       READ_AP     : begin end 
@@ -339,15 +353,14 @@ begin
                      
 	  	      i <= i+1;
 		      if( i > 0) 
-		        {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0111;
+		        {cs_bar, ras_bar, cas_bar, we_bar} <= NOP; 
 	      	      else
-		        {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0010;
+		        {cs_bar, ras_bar, cas_bar, we_bar} <= PRE; 
     		      if(i==1)
 			begin
 		  	  state <= IDLE;
-		
-		  	  {cs_bar, ras_bar, cas_bar, we_bar} <= 4'b0111;
-			i <= 0;
+		  	  {cs_bar, ras_bar, cas_bar, we_bar} <= NOP; 
+			  i <= 0;
 			end
 		end
       default: state <= IDLE;

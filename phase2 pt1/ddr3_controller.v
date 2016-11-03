@@ -62,7 +62,6 @@ module ddr3_controller(
    wire		full;				// From XDFIN of fifo.v
    // End of automatics
    
-   wire	 ri_i;
    wire	 ts_i;   
    reg 	 ck_i;
    wire	 cke_i;
@@ -87,32 +86,39 @@ module ddr3_controller(
    wire[12:0] a,init_a;
    wire[1:0] dm, init_dm;
    wire init_cke;
-   wire ri_con;
    wire init_odt;
    wire init_ts_con;
-   wire plogic_ts_con;
+   wire init_ri;
+   wire plogic_ts;
+   wire plogic_ri;
    wire reset_out;
    wire [33:0] CMD_data_in, CMD_data_out;
    wire [41:0] RETURN_data_in, RETURN_data_out;
    wire CMD_empty, CMD_full, RETURN_empty, RETURN_full;
-   wire IN_put, IN_get, CMD_get, RETURN_put, RETURN_get;
-   reg CMD_put;
+   wire DATA_get, CMD_get, RETURN_put, RETURN_get;
+   reg CMD_put, DATA_put;
    wire DATA_empty;
   
    // CK divider
-   always @(posedge clk) 
+   always @(posedge clk)
+   begin 
      if(reset==1)
-		begin
-         ck_i <= 0;
-		 CMD_put <= 0;
-		end
+      begin
+        ck_i <= 0;
+	CMD_put <= 0;
+        DATA_put <= 0; 
+      end
      else
-		begin
-			ck_i <= ~ck_i; 
-			if(ready == 1)
-			CMD_put <= 1'b1;
-		end
-		// 312 MHz Clock (625/2 MHz)
+       begin
+         ck_i <= ~ck_i; 
+         if(ready == 1)
+         begin
+           DATA_put <= 1'b1;
+           CMD_put  <= 1'b1;
+	 end
+       end
+   end
+
 assign resetbar_i = ~reset && reset_out;
 
 ///////////////////////////////task2: determine the FIFO connections ///////////////////////////////////
@@ -123,8 +129,8 @@ assign resetbar_i = ~reset && reset_out;
 				  .wclk         (clk),
 				  .reset	(reset),
 				  .data_in      (din),
-				  .we    	(IN_put),
-				  .re		(IN_get),
+				  .we    	(DATA_put),
+				  .re		(DATA_get),
 				  .data_out	(dataOut),
 				  .empty_bar	(DATA_empty),
 	  		          .full_bar     (notfull),
@@ -185,7 +191,7 @@ assign resetbar_i = ~reset && reset_out;
 
 Processing_logic PLOGIC (
                                   //outputs
-                                  .DATA_get       (IN_get),     //read from DATA FIFO
+                                  .DATA_get       (DATA_get),     //read from DATA FIFO
                                   .CMD_get        (CMD_get),    //read from CMD  FIFO
                                   .RETURN_put     (RETURN_put), //write to RETURN FIFO 
                                   .RETURN_address (RETURN_data_in[41:16]), //RETURN address 
@@ -197,9 +203,11 @@ Processing_logic PLOGIC (
                                   .BA             (ba),
                                   .A              (a), 
                                   .DM             (dm_i),
-                                  .DQS_out        (dqs_o),
-                                  .DQ_out         (dq_o),
-                                  .ts_con         (plogic_ts_con),
+                                  .DQS_out        (dqs_i[1:0]),
+                                  .DQS_bar_out    (dqsbar_i[1:0]),
+                                  .DQ_out         (dq_i[15:0]),
+                                  .ts_con         (plogic_ts),
+                                  .ri_o           (plogic_ri),
                                   // Inputs
                                   .clk            (clk),
                                   .ck             (ck_i),
@@ -209,20 +217,22 @@ Processing_logic PLOGIC (
                                   .CMD_data_out   (CMD_data_out), 
                                   .DATA_data_out  (dataOut),
                                   .RETURN_full    (RETURN_full),
-                                  .DQS_in         (dqs_i),
-                                  .DQ_in          (dq_i)
+                                  .DQS_in         (dqs_o[1:0]),
+                                  .DQS_bar_in     (dqsbar_o[1:0]),
+                                  .DQ_in          (dq_o[15:0]) //from SSTL dq_o
                              );
   // Output Mux for control signals
-   assign a_i 	   = (ready) ? a      : init_a;
-   assign ba_i 	   = (ready) ? ba     : init_ba;
-   assign csbar_i  = (ready) ? csbar  : init_csbar;
-   assign rasbar_i = (ready) ? rasbar : init_rasbar;
-   assign casbar_i = (ready) ? casbar : init_casbar;
-   assign webar_i  = (ready) ? webar  : init_webar;
-   assign ts_i     = (ready) ? plogic_ts_con : init_ts_con; 
+   assign a_i 	   = (ready) ? a         : init_a;
+   assign ba_i 	   = (ready) ? ba        : init_ba;
+   assign csbar_i  = (ready) ? csbar     : init_csbar;
+   assign rasbar_i = (ready) ? rasbar    : init_rasbar;
+   assign casbar_i = (ready) ? casbar    : init_casbar;
+   assign webar_i  = (ready) ? webar     : init_webar;
+   assign ts_i     = (ready) ? plogic_ts : init_ts_con; 
+   assign ri_i     = (ready) ? plogic_ri : init_ri; 
+   assign init_ri  = 0; //inhibit receiver during init phase 
    assign cke_i	   = init_cke;
    assign odt_i	   = init_odt;
-   assign ri_con   = 1;
    assign CMD_data_in = {cmd, sz, op, addr};
 
    SSTL18DDR3INTERFACE XSSTL (/*autoinst*/

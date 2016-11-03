@@ -5,7 +5,7 @@
 #
 # You can restore this configuration with:
 #
-#     ncsim -STATUS -NOCOPYRIGHT -MESSAGES -NCFATAL INVSUP -NOWARN DLBRLK -TCL -NOLOG -NOKEY -INPUT ./scripts/runscript.tcl -GUI tb -tcl -update -input /home/scf-23/nhourani/RTL_folder_3/ddr3_scr_scw.tcl
+#     ncsim -STATUS -NOCOPYRIGHT -MESSAGES -NCFATAL INVSUP -NOWARN DLBRLK -TCL -NOLOG -NOKEY -INPUT ./scripts/runscript.tcl -GUI tb -input /home/scf-23/nhourani/RTL_folder_3/ddr3_scr_scw.tcl
 #
 
 set tcl_prompt1 {puts -nonewline "ncsim> "}
@@ -40,9 +40,6 @@ set assert_report_incompletes 1
 set show_force 1
 set force_reset_by_reinvoke 0
 database -open -shm -into ncsim.shm ncsim.shm -default
-probe -create -database ncsim.shm tb -all -memories -depth all
-probe -create -database ncsim.shm tb -all -memories -depth all
-probe -create -database ncsim.shm tb -all -memories -depth all
 probe -create -database ncsim.shm tb -all -memories -depth all
 
 simvision -input /home/scf-23/nhourani/RTL_folder_3/ddr3_scr_scw.tcl.svcf

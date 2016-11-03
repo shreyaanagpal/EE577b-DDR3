@@ -1,10 +1,10 @@
-# SimVision Command Script (Wed Nov 02 09:25:07 PDT 2016)
+# SimVision Command Script (Thu Nov 03 10:17:27 PDT 2016)
 #
 # Version 08.20.p001
 #
 # You can restore this configuration with:
 #
-#     ncsim -STATUS -NOCOPYRIGHT -MESSAGES -NCFATAL INVSUP -NOWARN DLBRLK -TCL -NOLOG -NOKEY -INPUT ./scripts/runscript.tcl -GUI tb -tcl -update -input /home/scf-23/nhourani/RTL_folder_3/ddr3_scr_scw.tcl
+#     ncsim -STATUS -NOCOPYRIGHT -MESSAGES -NCFATAL INVSUP -NOWARN DLBRLK -TCL -NOLOG -NOKEY -INPUT ./scripts/runscript.tcl -GUI tb -input /home/scf-23/nhourani/RTL_folder_3/ddr3_scr_scw.tcl
 #
 
 
@@ -45,13 +45,13 @@ preferences set toolbar-WaveZoom-WaveWindow {
 #
 
 database require simulator -hints {
-	simulator "ncsim -STATUS -NOCOPYRIGHT -MESSAGES -NCFATAL INVSUP -NOWARN DLBRLK -TCL -NOLOG -NOKEY -INPUT ./scripts/runscript.tcl -GUI tb -tcl -update -input ddr3_scr_scw.tcl"
+	simulator "ncsim -STATUS -NOCOPYRIGHT -MESSAGES -NCFATAL INVSUP -NOWARN DLBRLK -TCL -NOLOG -NOKEY -INPUT ./scripts/runscript.tcl -GUI tb -input ddr3_scr_scw.tcl"
 }
 
 #
 # groups
 #
-catch {group new -name {Memory Interface} -overlay 0}
+catch {group new -name {TB Memory IF} -overlay 0}
 catch {group new -name {Memory Controller} -overlay 0}
 catch {group new -name {Processing Logic} -overlay 0}
 catch {group new -name {Group 4} -overlay 0}
@@ -60,8 +60,10 @@ catch {group new -name {CMD FIFO} -overlay 0}
 catch {group new -name {Ring Buffer} -overlay 0}
 catch {group new -name {Init Engine} -overlay 0}
 catch {group new -name {DATA FIFO} -overlay 0}
+catch {group new -name {c0_dqs_pad[0] contributors} -overlay 0}
+catch {group new -name SSTL -overlay 0}
 
-group using {Memory Interface}
+group using {TB Memory IF}
 group set -overlay 0
 group set -comment {}
 group clear 0 end
@@ -79,6 +81,7 @@ group insert \
     {tb.c0_dm_pad[1:0]} \
     {tb.c0_dq_pad[15:0]} \
     {tb.c0_dqs_pad[0]} \
+    {c0_dqs_pad[0] contributors} \
     {tb.c0_dqsbar_pad[0]} \
     tb.c0_odt_pad \
     tb.c0_resetbar_pad
@@ -116,6 +119,9 @@ group insert \
     {tb.XCON.PLOGIC.DQS_out[1:0]} \
     {tb.XCON.PLOGIC.DQ_in[15:0]} \
     {tb.XCON.PLOGIC.DQ_out[15:0]} \
+    {tb.XCON.PLOGIC.DATA_data_out[15:0]} \
+    tb.XCON.PLOGIC.DATA_get \
+    tb.XCON.PLOGIC.ts_con \
     tb.XCON.PLOGIC.cas_bar \
     tb.XCON.PLOGIC.ck \
     tb.XCON.PLOGIC.clk \
@@ -276,10 +282,57 @@ group insert \
     {tb.XCON.FIFO_DATA.wr_ptr_gray_s[5:0]} \
     {tb.XCON.FIFO_DATA.wr_ptr_gray_ss[5:0]}
 
+group using {c0_dqs_pad[0] contributors}
+group set -overlay 0
+group set -comment {simulator::tb.c0_dqs_pad[0] contributors}
+group clear 0 end
+
+group insert \
+    {tb.XDDR0.den_dqs[1:0]} \
+    {tb.XCON.XSSTL.DQS[1].sstl_dqs.A} \
+    {tb.XCON.XSSTL.DQS[1].sstl_dqs.TS}
+
+group using SSTL
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    {tb.XCON.XSSTL.a_i[12:0]} \
+    {tb.XCON.XSSTL.a_o[12:0]} \
+    {tb.XCON.XSSTL.a_pad[12:0]} \
+    {tb.XCON.XSSTL.ba_i[2:0]} \
+    {tb.XCON.XSSTL.ba_o[2:0]} \
+    {tb.XCON.XSSTL.ba_pad[2:0]} \
+    {tb.XCON.XSSTL.dm_i[1:0]} \
+    {tb.XCON.XSSTL.dm_o[1:0]} \
+    {tb.XCON.XSSTL.dm_pad[1:0]} \
+    {tb.XCON.XSSTL.dq_i[15:0]} \
+    {tb.XCON.XSSTL.dq_o[15:0]} \
+    {tb.XCON.XSSTL.dq_pad[15:0]} \
+    {tb.XCON.XSSTL.dqs_i[1:0]} \
+    {tb.XCON.XSSTL.dqs_o[1:0]} \
+    {tb.XCON.XSSTL.dqs_pad[1:0]} \
+    {tb.XCON.XSSTL.dqsbar_i[1:0]} \
+    tb.XCON.XSSTL.odt_i \
+    tb.XCON.XSSTL.odt_o \
+    tb.XCON.XSSTL.odt_pad \
+    tb.XCON.XSSTL.rasbar_i \
+    tb.XCON.XSSTL.rasbar_o \
+    tb.XCON.XSSTL.rasbar_pad \
+    tb.XCON.XSSTL.resetbar_i \
+    tb.XCON.XSSTL.resetbar_o \
+    tb.XCON.XSSTL.resetbar_pad \
+    tb.XCON.XSSTL.ri_i \
+    tb.XCON.XSSTL.ts_i \
+    tb.XCON.XSSTL.webar_i \
+    tb.XCON.XSSTL.webar_o \
+    tb.XCON.XSSTL.webar_pad
+
 #
 # cursors
 #
-set time 703018380ps
+set time 703025600ps
 if {[catch {cursor new -name  TimeA -time $time}] != ""} {
     cursor set -using TimeA -time $time
 }
@@ -301,21 +354,21 @@ mmap new -reuse -name {Example Map} -radix %x -contents {
 #
 # Design Browser windows
 #
-if {[catch {window new WatchList -name "Design Browser 1" -geometry 885x794+1136+191}] != ""} {
-    window geometry "Design Browser 1" 885x794+1136+191
+if {[catch {window new WatchList -name "Design Browser 1" -geometry 885x794+791+73}] != ""} {
+    window geometry "Design Browser 1" 885x794+791+73
 }
 window target "Design Browser 1" on
 browser using {Design Browser 1}
 browser set \
-    -scope simulator::tb.XCON.FIFO_DATA
-browser yview see simulator::tb.XCON.FIFO_DATA
+    -scope simulator::tb.XCON.PLOGIC
+browser yview see simulator::tb.XCON.PLOGIC
 browser timecontrol set -lock 0
 
 #
 # Waveform windows
 #
-if {[catch {window new WaveWindow -name "Waveform 1" -geometry 1581x1014+115+67}] != ""} {
-    window geometry "Waveform 1" 1581x1014+115+67
+if {[catch {window new WaveWindow -name "Waveform 1" -geometry 1709x1062+115+67}] != ""} {
+    window geometry "Waveform 1" 1709x1062+115+67
 }
 window target "Waveform 1" on
 waveform using {Waveform 1}
@@ -326,10 +379,12 @@ waveform set \
     -signalwidth 175 \
     -units ps \
     -valuewidth 135
-cursor set -using TimeA -time 703,018,380ps
-waveform baseline set -time 703,169,621ps
+cursor set -using TimeA -time 703,025,600ps
+waveform baseline set -time 703,007,349ps
 
-set groupId [waveform add -groups {{Memory Interface}}]
+set groupId [waveform add -groups {{TB Memory IF}}]
+set groupId1 [waveform find -name {c0_dqs_pad[0] contributors}]
+
 set glist [waveform hierarchy contents $groupId]
 set id [lindex $glist 0]
 foreach {name attrs} {
@@ -345,6 +400,8 @@ foreach {name attrs} {
     {simulator::tb.c0_dm_pad[1:0]} {-radix %b}
     {simulator::tb.c0_dq_pad[15:0]} {}
     {simulator::tb.c0_dqs_pad[0]} {}
+    {--
+} {-trace analogSampleAndHold}
     {simulator::tb.c0_dqsbar_pad[0]} {}
     simulator::tb.c0_odt_pad {}
     simulator::tb.c0_resetbar_pad {}
@@ -358,7 +415,6 @@ foreach {name attrs} {
         set glist [lrange $glist 1 end]
         set id [lindex $glist 0]
 }
-waveform hierarchy collapse $groupId
 
 set groupId [waveform add -groups {{Memory Controller}}]
 waveform hierarchy collapse $groupId
@@ -379,6 +435,9 @@ foreach {name attrs} {
     {simulator::tb.XCON.PLOGIC.DQS_out[1:0]} {}
     {simulator::tb.XCON.PLOGIC.DQ_in[15:0]} {}
     {simulator::tb.XCON.PLOGIC.DQ_out[15:0]} {}
+    {simulator::tb.XCON.PLOGIC.DATA_data_out[15:0]} {}
+    simulator::tb.XCON.PLOGIC.DATA_get {}
+    simulator::tb.XCON.PLOGIC.ts_con {}
     simulator::tb.XCON.PLOGIC.cas_bar {}
     simulator::tb.XCON.PLOGIC.ck {}
     simulator::tb.XCON.PLOGIC.clk {}
@@ -402,6 +461,8 @@ foreach {name attrs} {
         set glist [lrange $glist 1 end]
         set id [lindex $glist 0]
 }
+
+set groupId [waveform add -groups SSTL]
 waveform hierarchy collapse $groupId
 
 set groupId [waveform add -groups {{DATA FIFO}}]
@@ -417,7 +478,7 @@ set groupId [waveform add -groups {{Init Engine}}]
 waveform hierarchy collapse $groupId
 
 
-waveform xview limits 702998545ps 703171727ps
+waveform xview limits 702934759ps 703107943ps
 
 #
 # Console window
