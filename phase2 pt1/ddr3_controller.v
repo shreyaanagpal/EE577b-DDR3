@@ -25,8 +25,8 @@ module ddr3_controller(
    input [2:0]   cmd;
    input [15:0]  din;
    input [25:0]  addr;
-   output [15:0] dout;
-   output [25:0] raddr;
+   output reg [15:0] dout;
+   output reg [25:0] raddr;
    output [5:0]  fillcount;
    output notfull;
   // output	 notempty;
@@ -95,18 +95,24 @@ module ddr3_controller(
    wire [33:0] CMD_data_in, CMD_data_out;
    wire [41:0] RETURN_data_in, RETURN_data_out;
    wire CMD_empty, CMD_full, RETURN_empty, RETURN_full;
-   wire DATA_get, CMD_get, RETURN_put, RETURN_get;
-   reg CMD_put, DATA_put;
+   wire DATA_get, CMD_get, RETURN_put;
+   reg CMD_put, DATA_put, RETURN_get;
    wire DATA_empty;
-  
+  integer i;
+  reg RETURN_put_reg;
    // CK divider
    always @(posedge clk)
    begin 
      if(reset==1)
       begin
         ck_i <= 0;
-	CMD_put <= 0;
+		CMD_put <= 0;
         DATA_put <= 0; 
+		RETURN_get <= 0;
+		validout <= 0;
+		dout <= 'b0;
+		raddr <= 'b0;
+		i <= 0;
       end
      else
        begin
@@ -115,7 +121,26 @@ module ddr3_controller(
          begin
            DATA_put <= 1'b1;
            CMD_put  <= 1'b1;
-	 end
+		   validout <= 0;
+		   RETURN_get <= 0;
+		   if(RETURN_put)
+				RETURN_put_reg <= 1;
+		   if(RETURN_put_reg)
+		   begin
+				i <= i+1;
+				RETURN_get <= 1;
+				//if(i>=1)
+				//RETURN_get <= 0;
+				if(i == 4)
+				begin
+					validout <= 1;
+					dout <= RETURN_data_out[15:0];
+					raddr <= RETURN_data_out[41:16];
+					RETURN_put_reg <= 0;
+					i <= 0;
+				end
+		   end
+		 end
        end
    end
 
@@ -195,7 +220,7 @@ Processing_logic PLOGIC (
                                   .CMD_get        (CMD_get),    //read from CMD  FIFO
                                   .RETURN_put     (RETURN_put), //write to RETURN FIFO 
                                   .RETURN_address (RETURN_data_in[41:16]), //RETURN address 
-				  .RETURN_data    (RETURN_data_in[15:0]),  //RETURN data 
+									.RETURN_data    (RETURN_data_in[15:0]),  //RETURN data 
                                   .cs_bar         (csbar),
                                   .ras_bar        (rasbar),
                                   .cas_bar        (casbar),

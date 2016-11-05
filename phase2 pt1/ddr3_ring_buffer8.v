@@ -57,6 +57,8 @@ module ddr3_ring_buffer8(dout,listen,strobe,readPtr,din,reset);
 		  F0 <= 1;
 		else
 		  begin
+			if(count ==0)
+				@(posedge fStrobeBar);
 			 if(count<3)
 			   count<=count+1;
 			 else if (count==3)

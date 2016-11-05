@@ -17,8 +17,8 @@ module Processing_logic(
   //Return FIFO
   input             RETURN_full,
   output reg        RETURN_put, 
-  output reg [25:0] RETURN_address, 
-  output reg [15:0] RETURN_data,  
+  output wire [25:0] RETURN_address, 
+  output wire [15:0] RETURN_data,  
 
   //SSTL interface
   input      [15:0] DQ_in,
@@ -136,6 +136,8 @@ assign bank_addr   = addr[25:23];
 assign row_addr    = addr[22:10]; 
 assign col_addr    = addr[9:0];
 assign DQS_bar_out = ~DQS_out;
+assign RETURN_data = read_data;
+assign RETURN_address = CMD_data_out[25:0];
 
 //FSM State Memory, NSL, OFL 
 always @(negedge clk, posedge reset) 
@@ -145,7 +147,6 @@ begin
     CMD_get        <= 0;
     DATA_get       <= 0;
     RETURN_put     <= 0; 
-    RETURN_address <= 0;
     listen         <= 0;
     ts_con         <= 0; //tri-state active
     ri_o           <= 0; //receive inhibit active
@@ -220,7 +221,7 @@ begin
 
                       CMD_SCW  : begin
 				 BA       <= bank_addr;
-				 A[12:10] <= row_addr;
+				 A[12:0] <= row_addr;
 				 if(i == 1)
                                    begin
 				    state <= ACTIVATE;
@@ -255,7 +256,7 @@ begin
       BANK_ACTIVE : begin
 		    i <= i + 1;
                     BA <= bank_addr;
-                    A  <= row_addr;
+                    A[12:0]  <= row_addr;
 		    if(i>0)
 		      {cs_bar, ras_bar, cas_bar, we_bar} <= NOP; 
 		    else 
@@ -263,20 +264,20 @@ begin
 		    if(cmd == CMD_SCR && i == tRCD-1)
                       begin
                         BA     <= bank_addr;
-                        A[12:0] <= {3'b000,col_addr}; //send column address
+                        A[12:0] <= {col_addr,3'b000}; //send column address
                         state  <= READ;
-		        {cs_bar, ras_bar, cas_bar, we_bar} <= RD;
+						{cs_bar, ras_bar, cas_bar, we_bar} <= RD;
                         listen <= 1; //pulse ring buffer to listen to DQ & DQS
                         ri_o   <= 1; //disable receiver inhibit
                         i <= 0;
                       end
                     if(cmd == CMD_SCW && i == tRCD-1) //counter goes from 0 to tRCD-1 (total of tRCD cycles)
                       begin
-		        BA      <= bank_addr;
-                        A[12:0] <= {3'b000,col_addr}; //send column address
+						BA      <= bank_addr;
+                        A[12:0] <= {col_addr, 3'b000}; //send column address
                         i       <= 0;
-		        state   <= WRITE;
-		        {cs_bar, ras_bar, cas_bar, we_bar} <= WR; 
+						state   <= WRITE;
+						{cs_bar, ras_bar, cas_bar, we_bar} <= WR; 
 		      end
                     end
  
@@ -285,22 +286,23 @@ begin
       READ        : begin
 	   	      i       <= i+1;
 	              BA      <= bank_addr;
-	              A[12:0] <= {3'b000,col_addr}; //clear top 3 bits!
+	              A[12:0] <= {col_addr, 3'b000}; //clear top 3 bits!
                       ri_o    <= 1;
                       if(i == (RL+8+tRTP))
 	                begin
                           state <= PRECHARGE; 
                           ri_o  <= 0; //receiver inhibit
-		          {cs_bar, ras_bar, cas_bar, we_bar} <= PRE; 
-	                  i <= 0;
+						{cs_bar, ras_bar, cas_bar, we_bar} <= PRE; 
+							i <= 0;
+							RETURN_put <= 1;
 	                end
                       else if (i>0) 
                         {cs_bar, ras_bar, cas_bar, we_bar} <= NOP; 
 		    end
 				
       WRITE       : begin
-       		      BA      <= addr[25:23];
-       		      A[12:0] <= addr[9:0];
+       		      BA      <= bank_addr;
+       		      A[12:0] <= {col_addr, 3'b000};
        		      i       <= i+1;
                       
                       //send WRITE command
@@ -316,9 +318,9 @@ begin
  
                       //drive DQS (before DQ) 
                       if(i>=WL-1 && i <= BL+WL)
-			begin
+						begin
                          ts_con <= 1; //enable the bus
-	                 DQS_out[1:0] <= ~ DQS_out[1:0];
+						DQS_out[1:0] <= ~ DQS_out[1:0];
                         end
 
                       //drive DQ
@@ -350,7 +352,7 @@ begin
       READ_AP     : begin end 
       WRITE_AP    : begin end 
       PRECHARGE   : begin 
-                     
+                   RETURN_put <= 0;  
 	  	      i <= i+1;
 		      if( i > 0) 
 		        {cs_bar, ras_bar, cas_bar, we_bar} <= NOP; 
