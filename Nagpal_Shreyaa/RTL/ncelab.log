@@ -1,0 +1,138 @@
+ncelab: 08.20-p001: (c) Copyright 1995-2008 Cadence Design Systems, Inc.
+TOOL:	ncelab	08.20-p001: Started on Nov 09, 2016 at 21:41:16 PST
+ncelab
+    -ACCESS +rwc
+    -NCFATAL INVSUP
+    -NCFATAL CUNOTB
+    -ERRORMAX 5
+    -UPDATE
+    -MESSAGES
+    -loadpli /usr/usc/cadence/2009/VIPCAT113/tools.sun4v/denali/verilog/libdenpli.so:den_PLIPtr
+    -loadpli1 /home/scf-24/snagpal/RTL_folder_1/RTL_folder/fileio.so:bstrap
+    -TIMESCALE 1ps/1ps
+    -LIBVERBOSE
+    work.tb
+
+	Elaborating the design hierarchy:
+Resolving design unit 'ddr3_controller' at 'tb.XCON'.
+		Caching library 'work' ....... Done
+	library: 'work' views: 'module' -> found
+Resolved design unit 'ddr3_controller' at 'tb.XCON' to 'work.ddr3_controller:module'.
+Resolving design unit 'FIFO_2clk' at 'tb.XCON@ddr3_controller<module>.FIFO_DATA'.
+	library: 'work' views: 'module' -> found
+Resolved design unit 'FIFO_2clk' at 'tb.XCON@ddr3_controller<module>.FIFO_DATA' to 'work.FIFO_2clk:module'.
+Resolved design unit 'FIFO_2clk' at 'tb.XCON@ddr3_controller<module>.FIFO_CMD' to 'work.FIFO_2clk:module'.
+Resolved design unit 'FIFO_2clk' at 'tb.XCON@ddr3_controller<module>.FIFO_RETURN' to 'work.FIFO_2clk:module'.
+Resolving design unit 'ddr3_init_engine' at 'tb.XCON@ddr3_controller<module>.XINIT'.
+	library: 'work' views: 'module' -> found
+Resolved design unit 'ddr3_init_engine' at 'tb.XCON@ddr3_controller<module>.XINIT' to 'work.ddr3_init_engine:module'.
+Resolving design unit 'Processing_logic' at 'tb.XCON@ddr3_controller<module>.PLOGIC'.
+	library: 'work' views: 'module' -> found
+Resolved design unit 'Processing_logic' at 'tb.XCON@ddr3_controller<module>.PLOGIC' to 'work.Processing_logic:module'.
+Resolving design unit 'ddr3_ring_buffer8' at 'tb.XCON@ddr3_controller<module>.PLOGIC@Processing_logic<module>.ring_buffer'.
+	library: 'work' views: 'module' -> found
+Resolved design unit 'ddr3_ring_buffer8' at 'tb.XCON@ddr3_controller<module>.PLOGIC@Processing_logic<module>.ring_buffer' to 'work.ddr3_ring_buffer8:module'.
+Resolving design unit 'CLKBUF2' at 'tb.XCON@ddr3_controller<module>.PLOGIC@Processing_logic<module>.ring_buffer@ddr3_ring_buffer8<module>.DELAY0'.
+	library: 'work' views: 'module' -> found
+Resolved design unit 'CLKBUF2' at 'tb.XCON@ddr3_controller<module>.PLOGIC@Processing_logic<module>.ring_buffer@ddr3_ring_buffer8<module>.DELAY0' to 'work.CLKBUF2:module'.
+Resolved design unit 'CLKBUF2' at 'tb.XCON@ddr3_controller<module>.PLOGIC@Processing_logic<module>.ring_buffer@ddr3_ring_buffer8<module>.DELAY1' to 'work.CLKBUF2:module'.
+Resolved design unit 'CLKBUF2' at 'tb.XCON@ddr3_controller<module>.PLOGIC@Processing_logic<module>.ring_buffer@ddr3_ring_buffer8<module>.DELAY2' to 'work.CLKBUF2:module'.
+Resolved design unit 'CLKBUF2' at 'tb.XCON@ddr3_controller<module>.PLOGIC@Processing_logic<module>.ring_buffer@ddr3_ring_buffer8<module>.DELAY3' to 'work.CLKBUF2:module'.
+Resolved design unit 'CLKBUF2' at 'tb.XCON@ddr3_controller<module>.PLOGIC@Processing_logic<module>.ring_buffer@ddr3_ring_buffer8<module>.DELAY4' to 'work.CLKBUF2:module'.
+Resolving design unit 'SSTL18DDR3INTERFACE' at 'tb.XCON@ddr3_controller<module>.XSSTL'.
+	library: 'work' views: 'module' -> found
+Resolved design unit 'SSTL18DDR3INTERFACE' at 'tb.XCON@ddr3_controller<module>.XSSTL' to 'work.SSTL18DDR3INTERFACE:module'.
+Resolving design unit 'SSTL18DDR3DIFF' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.ck_sstl'.
+	library: 'work' views: 'module' -> found
+Resolved design unit 'SSTL18DDR3DIFF' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.ck_sstl' to 'work.SSTL18DDR3DIFF:module'.
+Resolving design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.cke_sstl'.
+	library: 'work' views: 'module' -> found
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.cke_sstl' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.casbar_sstl' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.rasbar_sstl' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.csbar_sstl' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.webar_sstl' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.odt_sstl' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.resetbar_sstl' to 'work.SSTL18DDR3:module'.
+Resolving design unit 'mt41j64m16_187' at 'tb.XDDR0'.
+	library: 'work' views: 'module' -> found
+Resolved design unit 'mt41j64m16_187' at 'tb.XDDR0' to 'work.mt41j64m16_187:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.BA[0].sstl_ba' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.BA[1].sstl_ba' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.BA[2].sstl_ba' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.A[0].sstl_a' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.A[1].sstl_a' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.A[2].sstl_a' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.A[3].sstl_a' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.A[4].sstl_a' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.A[5].sstl_a' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.A[6].sstl_a' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.A[7].sstl_a' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.A[8].sstl_a' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.A[9].sstl_a' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.A[10].sstl_a' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.A[11].sstl_a' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.A[12].sstl_a' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQ[0].sstl_dq' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQ[1].sstl_dq' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQ[2].sstl_dq' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQ[3].sstl_dq' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQ[4].sstl_dq' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQ[5].sstl_dq' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQ[6].sstl_dq' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQ[7].sstl_dq' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQ[8].sstl_dq' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQ[9].sstl_dq' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQ[10].sstl_dq' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQ[11].sstl_dq' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQ[12].sstl_dq' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQ[13].sstl_dq' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQ[14].sstl_dq' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQ[15].sstl_dq' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQS[0].sstl_dqs' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQS[1].sstl_dqs' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQSBAR[0].sstl_dqsbar' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DQSBAR[1].sstl_dqsbar' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DM[0].sstl_dm' to 'work.SSTL18DDR3:module'.
+Resolved design unit 'SSTL18DDR3' at 'tb.XCON@ddr3_controller<module>.XSSTL@SSTL18DDR3INTERFACE<module>.DM[1].sstl_dm' to 'work.SSTL18DDR3:module'.
+	Building instance overlay tables: .................... Done
+	Generating native compiled code:
+		work.FIFO_2clk:module <0x3fcab010>
+			streams:  25, words:  2360
+		work.FIFO_2clk:module <0x56c4964f>
+			streams:  25, words:  2013
+		work.FIFO_2clk:module <0x63986244>
+			streams:  25, words:  2281
+		work.Processing_logic:module <0x26410e99>
+			streams:  91, words: 13467
+		work.SSTL18DDR3INTERFACE:module <0x3053cf06>
+			streams:   8, words:   434
+		work.ddr3_controller:module <0x169f0cc7>
+			streams:  28, words:  1603
+		work.ddr3_init_engine:module <0x040f62c6>
+			streams:  16, words:  2658
+		work.ddr3_ring_buffer8:module <0x561a4420>
+			streams:  17, words:  1476
+		work.mt41j64m16_187:module <0x4987148f>
+			streams:   1, words:    61
+		work.tb:module <0x32a7702f>
+			streams:  42, words:  6558
+	Loading native compiled code:     .................... Done
+	Building instance specific data structures.
+	Design hierarchy summary:
+		                 Instances  Unique
+		Modules:                61      11
+		Primitives:            100       4
+		Timing outputs:          5       1
+		Registers:             171     127
+		Scalar wires:          132       -
+		Expanded wires:        100      11
+		Vectored wires:         29       -
+		Named events:            2       2
+		Always blocks:          50      26
+		Initial blocks:          4       4
+		Cont. assignments:      33      36
+		Pseudo assignments:     55      25
+		Simulation timescale:  1ps
+	Writing initial simulation snapshot: work.tb:module
+TOOL:	ncelab	08.20-p001: Exiting on Nov 09, 2016 at 21:41:17 PST  (total: 00:00:01)

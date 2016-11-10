@@ -1,0 +1,88 @@
+ncvlog: 08.20-p001: (c) Copyright 1995-2008 Cadence Design Systems, Inc.
+TOOL:	ncvlog	08.20-p001: Started on Nov 09, 2016 at 21:41:16 PST
+ncvlog
+    -STATUS
+    -MESSAGES
+    -UPDATE
+    -INCDIR ./include
+    -work work
+    ./tb/tb.v
+
+file: ./tb/tb.v
+	module work.AND2X1
+		errors: 0, warnings: 0
+	module work.AND2X2
+		errors: 0, warnings: 0
+	module work.AOI21X1
+		errors: 0, warnings: 0
+	module work.AOI22X1
+		errors: 0, warnings: 0
+	module work.BUFX2
+		errors: 0, warnings: 0
+	module work.BUFX4
+		errors: 0, warnings: 0
+	module work.CLKBUF1
+		errors: 0, warnings: 0
+	module work.CLKBUF2
+		errors: 0, warnings: 0
+	module work.CLKBUF3
+		errors: 0, warnings: 0
+	module work.DFFNEGX1
+		errors: 0, warnings: 0
+	module work.DFFPOSX1
+		errors: 0, warnings: 0
+	module work.DFFSR
+		errors: 0, warnings: 0
+	module work.FAX1
+		errors: 0, warnings: 0
+	module work.HAX1
+		errors: 0, warnings: 0
+	module work.INVX1
+		errors: 0, warnings: 0
+	module work.INVX2
+		errors: 0, warnings: 0
+	module work.INVX4
+		errors: 0, warnings: 0
+	module work.INVX8
+		errors: 0, warnings: 0
+	module work.LATCH
+		errors: 0, warnings: 0
+	module work.MUX2X1
+		errors: 0, warnings: 0
+	module work.NAND2X1
+		errors: 0, warnings: 0
+	module work.NAND3X1
+		errors: 0, warnings: 0
+	module work.NOR2X1
+		errors: 0, warnings: 0
+	module work.NOR3X1
+		errors: 0, warnings: 0
+	module work.OAI21X1
+		errors: 0, warnings: 0
+	module work.OAI22X1
+		errors: 0, warnings: 0
+	module work.OR2X1
+		errors: 0, warnings: 0
+	module work.OR2X2
+		errors: 0, warnings: 0
+	module work.TBUFX1
+		errors: 0, warnings: 0
+	module work.TBUFX2
+		errors: 0, warnings: 0
+	module work.XNOR2X1
+		errors: 0, warnings: 0
+	module work.XOR2X1
+		errors: 0, warnings: 0
+	primitive work.udp_dff
+		errors: 0, warnings: 0
+	primitive work.udp_tlat
+		errors: 0, warnings: 0
+	primitive work.udp_rslat
+		errors: 0, warnings: 0
+	primitive work.udp_mux2
+		errors: 0, warnings: 0
+	module work.tb
+		errors: 0, warnings: 0
+ncvlog: Memory Usage - 23.7M program + 4.6M data = 28.4M total
+ncvlog: CPU Usage - 0.1s system + 0.1s user = 0.2s total (0.3s, 61.1% cpu)
+TOOL:	ncvlog	08.20-p001: Exiting on Nov 09, 2016 at 21:41:16 PST  (total: 00:00:00)
