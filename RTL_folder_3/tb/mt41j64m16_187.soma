@@ -1,0 +1,55 @@
+<soma original.input.version="0.001">
+  <!--
+======================================================================
+Copyright 1999-2006 by Denali Software, Inc.  All rights reserved.
+======================================================================
+
+This SOMA file describes a memory model, using Denali Software's
+proprietary SOMA language.  By using this SOMA file, you agree to the
+following terms.  If you do not agree to these terms, you may not use
+this SOMA file.
+
+Subject to the restrictions set forth below, Denali Software grants
+you a non-exclusive, non-transferable license only to use this SOMA
+file to simulate the memory described in it using tools supplied by
+Denali Software.
+
+You may not:
+
+  (1)  Use this SOMA file to create software programs or tools that use
+       SOMA files as either input or output.
+
+  (2)  Modify this SOMA file or the SOMA language in any manner.
+
+  (3)  Use this SOMA file to create other languages for describing
+       memory models.
+
+  (4)  Distribute this SOMA file to others.
+
+This SOMA file is based on information received by Denali Software
+from third parties.  DENALI SOFTWARE PROVIDES THIS SOMA FILE "AS IS"
+AND EXPRESSLY DISCLAIMS ALL REPRESENTATIONS, WARRANTIES AND
+CONDITIONS, INCLUDING BUT NOT LIMITED TO WARRANTIES AND CONDITIONS OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE AND
+NONINFRINGEMENT.  DENALI SOFTWARE'S AGGREGATE LIABILITY ARISING FROM
+YOUR USE OF THIS SOMA FILE IS LIMITED TO ONE U.S. DOLLAR.
+
+If you have any questions or if you would like to inquire about
+obtaining additional or different rights in SOMA files or the SOMA
+language, please contact Denali Software, at www.denali.com or at
+info@denalisoft.com.
+
+************************************************************************
+ Manufacturer    : MICRON
+ Memory Class    : DDR3SDRAM
+ Part Name       : mt41j64m16-187
+ Revision        : 2013-04-11 12:28:57
+ Description     : 1 Gb DDR3 SDRAM
+ Datasheet URL   : http://www.micron.com/~/media/Documents/Products/Data%20Sheet/DRAM/1Gb_DDR3_SDRAM.pdf
+ Datasheet Info  : Rev. L, 09/2012
+ Author Name     : Denali Software KK, SS 
+ Author Comment  : 
+************************************************************************
+ PureView version: 3.3.019 $DENALI: /home/denali/denali/Linux/latest-->
+  <part ccontent="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" />
+</soma>

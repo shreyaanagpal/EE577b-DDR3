@@ -1,0 +1,588 @@
+# SimVision Command Script (Sat Nov 05 09:49:05 PDT 2016)
+#
+# Version 08.20.p001
+#
+# You can restore this configuration with:
+#
+#     ncsim -STATUS -NOCOPYRIGHT -MESSAGES -NCFATAL INVSUP -NOWARN DLBRLK -TCL -NOLOG -NOKEY -INPUT ./scripts/runscript.tcl -GUI tb -input /home/scf-23/nhourani/RTL_folder_3/ddr3_scr_scw.tcl
+#
+
+
+#
+# preferences
+#
+preferences set toolbar-SimControl-WatchList {
+  usual
+  hide set_break
+}
+preferences set toolbar-SimControl-WaveWindow {
+  usual
+  position -row 1
+}
+preferences set toolbar-CursorControl-WaveWindow {
+  usual
+  position -row 0 -pos 4
+}
+preferences set toolbar-TimeSearch-WaveWindow {
+  usual
+  position -row 0
+}
+preferences set toolbar-NavSignalList-WaveWindow {
+  usual
+  position -row 0 -pos 2
+}
+preferences set toolbar-Windows-WaveWindow {
+  usual
+  position -pos 5
+}
+preferences set toolbar-WaveZoom-WaveWindow {
+  usual
+  position -row 1 -pos 0 -anchor w
+}
+
+#
+# Simulator
+#
+
+database require simulator -hints {
+	simulator "ncsim -STATUS -NOCOPYRIGHT -MESSAGES -NCFATAL INVSUP -NOWARN DLBRLK -TCL -NOLOG -NOKEY -INPUT ./scripts/runscript.tcl -GUI tb -input ddr3_scr_scw.tcl"
+}
+
+#
+# groups
+#
+catch {group new -name {TB Memory IF} -overlay 0}
+catch {group new -name {Memory Controller} -overlay 0}
+catch {group new -name {Processing Logic} -overlay 0}
+catch {group new -name {Group 4} -overlay 0}
+catch {group new -name Testbench -overlay 0}
+catch {group new -name {CMD FIFO} -overlay 0}
+catch {group new -name {Ring Buffer} -overlay 0}
+catch {group new -name {Init Engine} -overlay 0}
+catch {group new -name {DATA FIFO} -overlay 0}
+catch {group new -name {c0_dqs_pad[0] contributors} -overlay 0}
+catch {group new -name SSTL -overlay 0}
+catch {group new -name {RTN FIFO} -overlay 0}
+catch {group new -name TB -overlay 0}
+catch {group new -name {DataFifoHasSpace contributors} -overlay 0}
+catch {group new -name {CmdFifoHasSpace contributors} -overlay 0}
+
+group using {TB Memory IF}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    tb.c0_ck_pad \
+    {tb.c0_a_pad[12:0]} \
+    {tb.c0_ba_pad[2:0]} \
+    tb.c0_rasbar_pad \
+    tb.c0_casbar_pad \
+    tb.c0_webar_pad \
+    tb.c0_ckbar_pad \
+    tb.c0_cke_pad \
+    tb.c0_csbar_pad \
+    {tb.c0_dm_pad[1:0]} \
+    {tb.c0_dq_pad[15:0]} \
+    {tb.c0_dqs_pad[0]} \
+    {c0_dqs_pad[0] contributors} \
+    {tb.c0_dqsbar_pad[0]} \
+    tb.c0_odt_pad \
+    tb.c0_resetbar_pad
+
+group using {Memory Controller}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    tb.clk \
+    tb.reset \
+    tb.ready \
+    {tb.addr[25:0]} \
+    {tb.raddr[25:0]} \
+    {tb.XCON.CMD_data_in[33:0]} \
+    {tb.cmd[2:0]} \
+    {tb.op[2:0]} \
+    {tb.sz[1:0]} \
+    {tb.din[15:0]} \
+    {tb.dout[15:0]}
+
+group using {Processing Logic}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    {tb.XCON.PLOGIC.col_addr[9:0]} \
+    {tb.XCON.PLOGIC.row_addr[12:0]} \
+    {tb.XCON.PLOGIC.bank_addr[2:0]} \
+    {tb.XCON.PLOGIC.addr[25:0]} \
+    {tb.XCON.PLOGIC.CMD_data_out[33:0]} \
+    {tb.XCON.PLOGIC.DQS_in[1:0]} \
+    {tb.XCON.PLOGIC.DQS_out[1:0]} \
+    {tb.XCON.PLOGIC.DQ_in[15:0]} \
+    {tb.XCON.PLOGIC.DQ_out[15:0]} \
+    {tb.XCON.PLOGIC.DATA_data_out[15:0]} \
+    tb.XCON.PLOGIC.DATA_get \
+    tb.XCON.PLOGIC.ts_con \
+    tb.XCON.PLOGIC.cas_bar \
+    tb.XCON.PLOGIC.ck \
+    tb.XCON.PLOGIC.clk \
+    {tb.XCON.PLOGIC.cmd[2:0]} \
+    tb.XCON.PLOGIC.cs_bar \
+    tb.XCON.PLOGIC.i \
+    tb.XCON.PLOGIC.listen \
+    {tb.XCON.PLOGIC.op[2:0]} \
+    tb.XCON.PLOGIC.ras_bar \
+    {tb.XCON.PLOGIC.read_data[15:0]} \
+    tb.XCON.PLOGIC.ready \
+    tb.XCON.PLOGIC.reset \
+    {tb.XCON.PLOGIC.state[3:0]}
+
+group using {Group 4}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+
+group using Testbench
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    tb.test_pattern_injection_done
+
+group using {CMD FIFO}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    tb.XCON.FIFO_CMD.wenq \
+    tb.XCON.FIFO_CMD.renq \
+    tb.XCON.FIFO_CMD.re \
+    tb.XCON.FIFO_CMD.full \
+    {tb.XCON.FIFO_CMD.fifo[0:31]} \
+    tb.XCON.FIFO_CMD.empty \
+    tb.XCON.FIFO_CMD.e \
+    {tb.XCON.FIFO_CMD.data_out[33:0]} \
+    {tb.XCON.FIFO_CMD.data_in[33:0]}
+
+group using {Ring Buffer}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    tb.XCON.PLOGIC.ring_buffer.fStrobe \
+    tb.XCON.PLOGIC.ring_buffer.F0 \
+    {tb.XCON.PLOGIC.ring_buffer.count[2:0]} \
+    tb.XCON.PLOGIC.ring_buffer.dStrobe \
+    tb.XCON.PLOGIC.ring_buffer.dStrobe0 \
+    tb.XCON.PLOGIC.ring_buffer.dStrobe1 \
+    tb.XCON.PLOGIC.ring_buffer.dStrobe2 \
+    tb.XCON.PLOGIC.ring_buffer.dStrobe3 \
+    {tb.XCON.PLOGIC.ring_buffer.din[15:0]} \
+    {tb.XCON.PLOGIC.ring_buffer.dout[15:0]} \
+    tb.XCON.PLOGIC.ring_buffer.fStrobeBar \
+    tb.XCON.PLOGIC.ring_buffer.listen \
+    {tb.XCON.PLOGIC.ring_buffer.r0[15:0]} \
+    {tb.XCON.PLOGIC.ring_buffer.r1[15:0]} \
+    {tb.XCON.PLOGIC.ring_buffer.r2[15:0]} \
+    {tb.XCON.PLOGIC.ring_buffer.r3[15:0]} \
+    {tb.XCON.PLOGIC.ring_buffer.r4[15:0]} \
+    {tb.XCON.PLOGIC.ring_buffer.r5[15:0]} \
+    {tb.XCON.PLOGIC.ring_buffer.r6[15:0]} \
+    {tb.XCON.PLOGIC.ring_buffer.r7[15:0]} \
+    {tb.XCON.PLOGIC.ring_buffer.readPtr[2:0]} \
+    tb.XCON.PLOGIC.ring_buffer.reset \
+    tb.XCON.PLOGIC.ring_buffer.strobe
+
+group using {Init Engine}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    tb.XCON.XINIT.rasbar \
+    tb.XCON.XINIT.INIT \
+    tb.XCON.XINIT.RESET \
+    {tb.XCON.XINIT.a[12:0]} \
+    {tb.XCON.XINIT.ba[2:0]} \
+    tb.XCON.XINIT.casbar \
+    tb.XCON.XINIT.ck \
+    tb.XCON.XINIT.cke \
+    tb.XCON.XINIT.clk \
+    {tb.XCON.XINIT.counter[18:0]} \
+    tb.XCON.XINIT.counter1 \
+    tb.XCON.XINIT.csbar \
+    tb.XCON.XINIT.flag \
+    tb.XCON.XINIT.init \
+    tb.XCON.XINIT.odt \
+    tb.XCON.XINIT.ready \
+    tb.XCON.XINIT.reset \
+    tb.XCON.XINIT.reset_out \
+    tb.XCON.XINIT.ts_con \
+    tb.XCON.XINIT.webar
+
+group using {DATA FIFO}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    tb.XCON.FIFO_DATA.empty \
+    {tb.XCON.FIFO_DATA.data_in[15:0]} \
+    {tb.XCON.FIFO_DATA.data_out[15:0]} \
+    tb.XCON.FIFO_DATA.empty_bar \
+    {tb.XCON.FIFO_DATA.fifo[0:31]} \
+    tb.XCON.FIFO_DATA.full \
+    tb.XCON.FIFO_DATA.re \
+    tb.XCON.FIFO_DATA.renq \
+    tb.XCON.FIFO_DATA.reset \
+    tb.XCON.FIFO_DATA.we \
+    tb.XCON.FIFO_DATA.wenq
+
+group using {c0_dqs_pad[0] contributors}
+group set -overlay 0
+group set -comment {simulator::tb.c0_dqs_pad[0] contributors}
+group clear 0 end
+
+group insert \
+    {tb.XDDR0.den_dqs[1:0]} \
+    {tb.XCON.XSSTL.DQS[1].sstl_dqs.A} \
+    {tb.XCON.XSSTL.DQS[1].sstl_dqs.TS}
+
+group using SSTL
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    {tb.XCON.XSSTL.a_i[12:0]} \
+    {tb.XCON.XSSTL.a_o[12:0]} \
+    {tb.XCON.XSSTL.a_pad[12:0]} \
+    {tb.XCON.XSSTL.ba_i[2:0]} \
+    {tb.XCON.XSSTL.ba_o[2:0]} \
+    {tb.XCON.XSSTL.ba_pad[2:0]} \
+    {tb.XCON.XSSTL.dm_i[1:0]} \
+    {tb.XCON.XSSTL.dm_o[1:0]} \
+    {tb.XCON.XSSTL.dm_pad[1:0]} \
+    {tb.XCON.XSSTL.dq_i[15:0]} \
+    {tb.XCON.XSSTL.dq_o[15:0]} \
+    {tb.XCON.XSSTL.dq_pad[15:0]} \
+    {tb.XCON.XSSTL.dqs_i[1:0]} \
+    {tb.XCON.XSSTL.dqs_o[1:0]} \
+    {tb.XCON.XSSTL.dqs_pad[1:0]} \
+    {tb.XCON.XSSTL.dqsbar_i[1:0]} \
+    tb.XCON.XSSTL.odt_i \
+    tb.XCON.XSSTL.odt_o \
+    tb.XCON.XSSTL.odt_pad \
+    tb.XCON.XSSTL.rasbar_i \
+    tb.XCON.XSSTL.rasbar_o \
+    tb.XCON.XSSTL.rasbar_pad \
+    tb.XCON.XSSTL.resetbar_i \
+    tb.XCON.XSSTL.resetbar_o \
+    tb.XCON.XSSTL.resetbar_pad \
+    tb.XCON.XSSTL.ri_i \
+    tb.XCON.XSSTL.ts_i \
+    tb.XCON.XSSTL.webar_i \
+    tb.XCON.XSSTL.webar_o \
+    tb.XCON.XSSTL.webar_pad
+
+group using {RTN FIFO}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    {tb.XCON.FIFO_RETURN.data_in[41:0]} \
+    {tb.XCON.FIFO_RETURN.data_out[41:0]} \
+    tb.XCON.FIFO_RETURN.empty \
+    {tb.XCON.FIFO_RETURN.fifo[0:31]} \
+    {tb.XCON.FIFO_RETURN.fillcount[5:0]} \
+    tb.XCON.FIFO_RETURN.full
+
+group using TB
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+    {tb.Addr[25:0]} \
+    tb.ApplyTestPattern \
+    tb.BlkWriteInProgress \
+    {tb.Cmd[2:0]} \
+    tb.CmdFifoHasSpace \
+    {tb.Data[15:0]} \
+    tb.DataFifoHasSpace \
+    tb.Fetching \
+    tb.Go \
+    {tb.Op[2:0]} \
+    {tb.Sz[1:0]} \
+    tb.WaitCycles \
+    {tb.addr[25:0]} \
+    tb.blkWriteCount \
+    tb.c \
+    tb.clk \
+    {tb.cmd[2:0]} \
+    tb.cycle_counter \
+    {tb.din[15:0]} \
+    {tb.dout[15:0]} \
+    tb.end_count \
+    tb.f_dump1 \
+    tb.fetchNextTestPattern \
+    tb.fetching \
+    {tb.fillcount[5:0]} \
+    tb.fin \
+    tb.fout_trc \
+    tb.initddr \
+    tb.non_read_cmd_consumed \
+    tb.nop_consumed \
+    tb.notfull \
+    {tb.op[2:0]} \
+    tb.r \
+    {tb.raddr[25:0]} \
+    tb.read_cmd_consumed \
+    tb.ready \
+    tb.reset \
+    tb.start_count \
+    {tb.sz[1:0]} \
+    tb.test_pattern_injection_done \
+    tb.validout \
+    tb.waitCount \
+    tb.waiting
+
+group using {DataFifoHasSpace contributors}
+group set -overlay 0
+group set -comment {simulator::tb.DataFifoHasSpace contributors}
+group clear 0 end
+
+group insert \
+    {tb.fillcount[5:0]}
+
+group using {CmdFifoHasSpace contributors}
+group set -overlay 0
+group set -comment {simulator::tb.CmdFifoHasSpace contributors}
+group clear 0 end
+
+group insert \
+    tb.notfull
+
+#
+# cursors
+#
+set time 702942115ps
+if {[catch {cursor new -name  TimeA -time $time}] != ""} {
+    cursor set -using TimeA -time $time
+}
+
+#
+# mmaps
+#
+mmap new -reuse -name {Boolean as Logic} -radix %b -contents {
+{%c=FALSE -edgepriority 1 -shape low}
+{%c=TRUE -edgepriority 1 -shape high}
+}
+mmap new -reuse -name {Example Map} -radix %x -contents {
+{%b=11???? -bgcolor orange -label REG:%x -linecolor yellow -shape bus}
+{%x=1F -bgcolor red -label ERROR -linecolor white -shape EVENT}
+{%x=2C -bgcolor red -label ERROR -linecolor white -shape EVENT}
+{%x=* -label %x -linecolor gray -shape bus}
+}
+
+#
+# Design Browser windows
+#
+if {[catch {window new WatchList -name "Design Browser 1" -geometry 700x500+156+156}] != ""} {
+    window geometry "Design Browser 1" 700x500+156+156
+}
+window target "Design Browser 1" on
+browser using {Design Browser 1}
+browser set \
+    -scope simulator::tb
+browser yview see simulator::tb
+browser timecontrol set -lock 0
+
+#
+# Waveform windows
+#
+if {[catch {window new WaveWindow -name "Waveform 1" -geometry 1709x1062+115+67}] != ""} {
+    window geometry "Waveform 1" 1709x1062+115+67
+}
+window target "Waveform 1" on
+waveform using {Waveform 1}
+waveform sidebar visibility partial
+waveform set \
+    -primarycursor TimeA \
+    -signalnames name \
+    -signalwidth 175 \
+    -units ps \
+    -valuewidth 135
+cursor set -using TimeA -time 702,942,115ps
+waveform baseline set -time 703,012,430ps
+
+set groupId [waveform add -groups {{TB Memory IF}}]
+set groupId1 [waveform find -name {c0_dqs_pad[0] contributors}]
+
+set glist [waveform hierarchy contents $groupId]
+set id [lindex $glist 0]
+foreach {name attrs} {
+    simulator::tb.c0_ck_pad {}
+    {simulator::tb.c0_a_pad[12:0]} {-radix %x}
+    {simulator::tb.c0_ba_pad[2:0]} {}
+    simulator::tb.c0_rasbar_pad {}
+    simulator::tb.c0_casbar_pad {}
+    simulator::tb.c0_webar_pad {}
+    simulator::tb.c0_ckbar_pad {}
+    simulator::tb.c0_cke_pad {}
+    simulator::tb.c0_csbar_pad {}
+    {simulator::tb.c0_dm_pad[1:0]} {-radix %b}
+    {simulator::tb.c0_dq_pad[15:0]} {}
+    {simulator::tb.c0_dqs_pad[0]} {}
+    {--
+} {-trace analogSampleAndHold}
+    {simulator::tb.c0_dqsbar_pad[0]} {}
+    simulator::tb.c0_odt_pad {}
+    simulator::tb.c0_resetbar_pad {}
+} {
+    set expected [ join [waveform signals -format fullpath $id] ]
+    if {[string equal $name $expected]} {
+        if {$attrs != ""} {
+            eval waveform format $id $attrs
+        }
+    }
+        set glist [lrange $glist 1 end]
+        set id [lindex $glist 0]
+}
+waveform hierarchy collapse $groupId
+
+set groupId [waveform add -groups {{Memory Controller}}]
+waveform hierarchy collapse $groupId
+
+set groupId [waveform add -groups {{Processing Logic}}]
+set glist [waveform hierarchy contents $groupId]
+set id [lindex $glist 0]
+foreach {name attrs} {
+    {simulator::tb.XCON.PLOGIC.col_addr[9:0]} {-radix %x}
+    {simulator::tb.XCON.PLOGIC.row_addr[12:0]} {-radix %x}
+    {simulator::tb.XCON.PLOGIC.bank_addr[2:0]} {-radix %x}
+    {simulator::tb.XCON.PLOGIC.addr[25:0]} {}
+    {simulator::tb.XCON.PLOGIC.CMD_data_out[33:0]} {}
+    {simulator::tb.XCON.PLOGIC.DQS_in[1:0]} {}
+    {simulator::tb.XCON.PLOGIC.DQS_out[1:0]} {}
+    {simulator::tb.XCON.PLOGIC.DQ_in[15:0]} {}
+    {simulator::tb.XCON.PLOGIC.DQ_out[15:0]} {}
+    {simulator::tb.XCON.PLOGIC.DATA_data_out[15:0]} {}
+    simulator::tb.XCON.PLOGIC.DATA_get {}
+    simulator::tb.XCON.PLOGIC.ts_con {}
+    simulator::tb.XCON.PLOGIC.cas_bar {}
+    simulator::tb.XCON.PLOGIC.ck {}
+    simulator::tb.XCON.PLOGIC.clk {}
+    {simulator::tb.XCON.PLOGIC.cmd[2:0]} {}
+    simulator::tb.XCON.PLOGIC.cs_bar {}
+    simulator::tb.XCON.PLOGIC.i {}
+    simulator::tb.XCON.PLOGIC.listen {}
+    {simulator::tb.XCON.PLOGIC.op[2:0]} {}
+    simulator::tb.XCON.PLOGIC.ras_bar {}
+    {simulator::tb.XCON.PLOGIC.read_data[15:0]} {}
+    simulator::tb.XCON.PLOGIC.ready {}
+    simulator::tb.XCON.PLOGIC.reset {}
+    {simulator::tb.XCON.PLOGIC.state[3:0]} {}
+} {
+    set expected [ join [waveform signals -format fullpath $id] ]
+    if {[string equal $name $expected]} {
+        if {$attrs != ""} {
+            eval waveform format $id $attrs
+        }
+    }
+        set glist [lrange $glist 1 end]
+        set id [lindex $glist 0]
+}
+waveform hierarchy collapse $groupId
+
+set groupId [waveform add -groups {{Ring Buffer}}]
+waveform hierarchy collapse $groupId
+
+set groupId [waveform add -groups {{Init Engine}}]
+waveform hierarchy collapse $groupId
+
+set groupId [waveform add -groups SSTL]
+waveform hierarchy collapse $groupId
+
+set groupId [waveform add -groups {{DATA FIFO}}]
+waveform hierarchy collapse $groupId
+
+set groupId [waveform add -groups {{CMD FIFO}}]
+waveform hierarchy collapse $groupId
+
+set groupId [waveform add -groups TB]
+set glist [waveform hierarchy contents $groupId]
+set id [lindex $glist 0]
+foreach {name attrs} {
+    {simulator::tb.Addr[25:0]} {}
+    simulator::tb.ApplyTestPattern {}
+    simulator::tb.BlkWriteInProgress {}
+    {simulator::tb.Cmd[2:0]} {}
+    simulator::tb.CmdFifoHasSpace {}
+    {simulator::tb.Data[15:0]} {}
+    simulator::tb.DataFifoHasSpace {}
+    simulator::tb.Fetching {}
+    simulator::tb.Go {}
+    {simulator::tb.Op[2:0]} {}
+    {simulator::tb.Sz[1:0]} {}
+    simulator::tb.WaitCycles {}
+    {simulator::tb.addr[25:0]} {}
+    simulator::tb.blkWriteCount {}
+    simulator::tb.c {}
+    simulator::tb.clk {}
+    {simulator::tb.cmd[2:0]} {}
+    simulator::tb.cycle_counter {}
+    {simulator::tb.din[15:0]} {}
+    {simulator::tb.dout[15:0]} {}
+    simulator::tb.end_count {}
+    simulator::tb.f_dump1 {-radix %x}
+    simulator::tb.fetchNextTestPattern {}
+    simulator::tb.fetching {}
+    {simulator::tb.fillcount[5:0]} {-radix %d}
+    simulator::tb.fin {-radix %x}
+    simulator::tb.fout_trc {-radix %x}
+    simulator::tb.initddr {}
+    simulator::tb.non_read_cmd_consumed {}
+    simulator::tb.nop_consumed {}
+    simulator::tb.notfull {}
+    {simulator::tb.op[2:0]} {}
+    simulator::tb.r {}
+    {simulator::tb.raddr[25:0]} {}
+    simulator::tb.read_cmd_consumed {}
+    simulator::tb.ready {}
+    simulator::tb.reset {}
+    simulator::tb.start_count {-radix %x}
+    {simulator::tb.sz[1:0]} {}
+    simulator::tb.test_pattern_injection_done {}
+    simulator::tb.validout {}
+    simulator::tb.waitCount {}
+    simulator::tb.waiting {}
+} {
+    set expected [ join [waveform signals -format fullpath $id] ]
+    if {[string equal $name $expected]} {
+        if {$attrs != ""} {
+            eval waveform format $id $attrs
+        }
+    }
+        set glist [lrange $glist 1 end]
+        set id [lindex $glist 0]
+}
+
+set groupId [waveform add -groups {{RTN FIFO}}]
+waveform hierarchy collapse $groupId
+
+
+waveform xview limits 702626998ps 703319734ps
+
+#
+# Console window
+#
+console set -windowname Console

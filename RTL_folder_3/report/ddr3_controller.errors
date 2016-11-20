@@ -1,0 +1,5 @@
+Extended error info:
+can't unset "project99": no such variable
+    while executing
+"unset project99"
+ -- End Extended Error Info

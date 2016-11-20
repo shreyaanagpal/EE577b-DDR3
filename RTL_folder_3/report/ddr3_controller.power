@@ -1,0 +1,53 @@
+Loading db file '/home/scf-22/ee577/NCSU45PDK/FreePDK45/osu_soc/lib/files/gscl45nm.db'
+Information: Propagating switching activity (low effort zero delay simulation). (PWR-6)
+Warning: Design has unannotated primary inputs. (PWR-414)
+Warning: Design has unannotated sequential cell outputs. (PWR-415)
+ 
+****************************************
+Report : power
+        -analysis_effort low
+Design : ddr3_controller
+Version: F-2011.09-SP2
+Date   : Sat Nov 19 08:18:27 2016
+****************************************
+
+
+Library(s) Used:
+
+    gscl45nm (File: /home/scf-22/ee577/NCSU45PDK/FreePDK45/osu_soc/lib/files/gscl45nm.db)
+
+
+Operating Conditions: typical   Library: gscl45nm
+Wire Load Model Mode: top
+
+
+Global Operating Voltage = 1.1  
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000pf
+    Time Units = 1ns
+    Dynamic Power Units = 1mW    (derived from V,C,T units)
+    Leakage Power Units = 1nW
+
+
+  Cell Internal Power  =   8.8166 uW   (99%)
+  Net Switching Power  =  86.6470 nW    (1%)
+                         ---------
+Total Dynamic Power    =   8.9032 uW  (100%)
+
+Cell Leakage Power     =  80.2145 nW
+
+
+                 Internal         Switching           Leakage            Total
+Power Group      Power            Power               Power              Power   (   %    )  Attrs
+--------------------------------------------------------------------------------------------------
+io_pad             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+black_box          0.0000            0.0000            0.0000            0.0000  (   0.00%)
+clock_network      0.0000            0.0000            0.0000            0.0000  (   0.00%)
+register       8.7900e-03            0.0000           54.9774        8.8450e-03  (  98.46%)
+sequential         0.0000            0.0000            0.0000            0.0000  (   0.00%)
+combinational  2.6558e-05        8.6647e-05           25.2371        1.3844e-04  (   1.54%)
+--------------------------------------------------------------------------------------------------
+Total          8.8166e-03 mW     8.6647e-05 mW        80.2145 nW     8.9834e-03 mW
+1

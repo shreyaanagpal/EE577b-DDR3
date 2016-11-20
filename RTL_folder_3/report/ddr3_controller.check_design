@@ -1,0 +1,285 @@
+ 
+****************************************
+check_design summary:
+Version:     F-2011.09-SP2
+Date:        Sun Nov 20 06:10:58 2016
+****************************************
+
+                   Name                                            Total
+--------------------------------------------------------------------------------
+Inputs/Outputs                                                     36
+    Unconnected ports (LINT-28)                                    10
+    Feedthrough (LINT-29)                                          26
+
+Cells                                                              91
+    Cells do not drive (LINT-1)                                    35
+    Connected to power or ground (LINT-32)                         52
+    Nets connected to multiple pins on same cell (LINT-33)          3
+    Hier pins without driver and load (LINT-60)                     1
+
+Nets                                                               28
+    Unloaded nets (LINT-2)                                         27
+    Undriven nets (LINT-3)                                          1
+
+Tristate                                                           47
+    Single tristate driver drives an input pin (LINT-63)           47
+--------------------------------------------------------------------------------
+
+Warning: In design 'ddr3_controller', cell 'C971' does not drive any nets. (LINT-1)
+Warning: In design 'FIFO_2clk_DATA_WIDTH16_FIFO_DEPTH32_PTR_WIDTH6', cell 'C3648' does not drive any nets. (LINT-1)
+Warning: In design 'FIFO_2clk_DATA_WIDTH16_FIFO_DEPTH32_PTR_WIDTH6', cell 'C3682' does not drive any nets. (LINT-1)
+Warning: In design 'FIFO_2clk_DATA_WIDTH34_FIFO_DEPTH32_PTR_WIDTH6', cell 'C7176' does not drive any nets. (LINT-1)
+Warning: In design 'FIFO_2clk_DATA_WIDTH34_FIFO_DEPTH32_PTR_WIDTH6', cell 'C7210' does not drive any nets. (LINT-1)
+Warning: In design 'FIFO_2clk_DATA_WIDTH42_FIFO_DEPTH32_PTR_WIDTH6', cell 'C8744' does not drive any nets. (LINT-1)
+Warning: In design 'FIFO_2clk_DATA_WIDTH42_FIFO_DEPTH32_PTR_WIDTH6', cell 'C8778' does not drive any nets. (LINT-1)
+Warning: In design 'ddr3_init_engine', cell 'C1109' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C25920' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26092' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26095' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26098' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26101' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26104' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26107' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26110' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26113' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26116' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26120' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26123' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26151' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26155' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26161' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26177' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26187' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26188' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26201' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26206' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26209' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26213' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26285' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26286' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26293' does not drive any nets. (LINT-1)
+Warning: In design 'Processing_logic', cell 'C26345' does not drive any nets. (LINT-1)
+Warning: In design 'ddr3_ring_buffer8', cell 'C981' does not drive any nets. (LINT-1)
+Warning: In design 'ddr3_controller', net 'RETURN_empty' driven by pin 'FIFO_RETURN/empty_bar' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/dm_o[0]' driven by pin 'XSSTL/DM[0].sstl_dm/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/dm_o[1]' driven by pin 'XSSTL/DM[1].sstl_dm/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/a_o[0]' driven by pin 'XSSTL/A[0].sstl_a/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/a_o[1]' driven by pin 'XSSTL/A[1].sstl_a/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/a_o[2]' driven by pin 'XSSTL/A[2].sstl_a/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/a_o[3]' driven by pin 'XSSTL/A[3].sstl_a/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/a_o[4]' driven by pin 'XSSTL/A[4].sstl_a/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/a_o[5]' driven by pin 'XSSTL/A[5].sstl_a/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/a_o[6]' driven by pin 'XSSTL/A[6].sstl_a/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/a_o[7]' driven by pin 'XSSTL/A[7].sstl_a/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/a_o[8]' driven by pin 'XSSTL/A[8].sstl_a/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/a_o[9]' driven by pin 'XSSTL/A[9].sstl_a/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/a_o[10]' driven by pin 'XSSTL/A[10].sstl_a/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/a_o[11]' driven by pin 'XSSTL/A[11].sstl_a/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/a_o[12]' driven by pin 'XSSTL/A[12].sstl_a/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/ba_o[0]' driven by pin 'XSSTL/BA[0].sstl_ba/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/ba_o[1]' driven by pin 'XSSTL/BA[1].sstl_ba/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/ba_o[2]' driven by pin 'XSSTL/BA[2].sstl_ba/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/resetbar_o' driven by pin 'XSSTL/resetbar_sstl/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/odt_o' driven by pin 'XSSTL/odt_sstl/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/webar_o' driven by pin 'XSSTL/webar_sstl/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/csbar_o' driven by pin 'XSSTL/csbar_sstl/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/rasbar_o' driven by pin 'XSSTL/rasbar_sstl/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/casbar_o' driven by pin 'XSSTL/casbar_sstl/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/cke_o' driven by pin 'XSSTL/cke_sstl/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'XSSTL/ck_o' driven by pin 'XSSTL/ck_sstl/Z' has no loads. (LINT-2)
+Warning: In design 'ddr3_controller', net 'ck' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'ddr3_controller', port 'read' is not connected to any nets. (LINT-28)
+Warning: In design 'ddr3_controller', port 'waiting' is not connected to any nets. (LINT-28)
+Warning: In design 'ddr3_init_engine', port 'ck' is not connected to any nets. (LINT-28)
+Warning: In design 'Processing_logic', port 'ck' is not connected to any nets. (LINT-28)
+Warning: In design 'Processing_logic', port 'CMD_data_out[28]' is not connected to any nets. (LINT-28)
+Warning: In design 'Processing_logic', port 'CMD_data_out[27]' is not connected to any nets. (LINT-28)
+Warning: In design 'Processing_logic', port 'CMD_data_out[26]' is not connected to any nets. (LINT-28)
+Warning: In design 'Processing_logic', port 'DQS_in[1]' is not connected to any nets. (LINT-28)
+Warning: In design 'Processing_logic', port 'DQS_bar_in[1]' is not connected to any nets. (LINT-28)
+Warning: In design 'Processing_logic', port 'DQS_bar_in[0]' is not connected to any nets. (LINT-28)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[25]' is connected directly to output port 'RETURN_address[25]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[24]' is connected directly to output port 'RETURN_address[24]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[23]' is connected directly to output port 'RETURN_address[23]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[22]' is connected directly to output port 'RETURN_address[22]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[21]' is connected directly to output port 'RETURN_address[21]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[20]' is connected directly to output port 'RETURN_address[20]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[19]' is connected directly to output port 'RETURN_address[19]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[18]' is connected directly to output port 'RETURN_address[18]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[17]' is connected directly to output port 'RETURN_address[17]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[16]' is connected directly to output port 'RETURN_address[16]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[15]' is connected directly to output port 'RETURN_address[15]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[14]' is connected directly to output port 'RETURN_address[14]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[13]' is connected directly to output port 'RETURN_address[13]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[12]' is connected directly to output port 'RETURN_address[12]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[11]' is connected directly to output port 'RETURN_address[11]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[10]' is connected directly to output port 'RETURN_address[10]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[9]' is connected directly to output port 'RETURN_address[9]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[8]' is connected directly to output port 'RETURN_address[8]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[7]' is connected directly to output port 'RETURN_address[7]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[6]' is connected directly to output port 'RETURN_address[6]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[5]' is connected directly to output port 'RETURN_address[5]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[4]' is connected directly to output port 'RETURN_address[4]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[3]' is connected directly to output port 'RETURN_address[3]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[2]' is connected directly to output port 'RETURN_address[2]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[1]' is connected directly to output port 'RETURN_address[1]'. (LINT-29)
+Warning: In design 'Processing_logic', input port 'CMD_data_out[0]' is connected directly to output port 'RETURN_address[0]'. (LINT-29)
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'ck_sstl' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'ck_sstl' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'cke_sstl' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'cke_sstl' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'casbar_sstl' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'casbar_sstl' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'rasbar_sstl' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'rasbar_sstl' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'csbar_sstl' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'csbar_sstl' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'webar_sstl' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'webar_sstl' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'odt_sstl' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'odt_sstl' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'resetbar_sstl' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'resetbar_sstl' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'BA[0].sstl_ba' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'BA[0].sstl_ba' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'BA[1].sstl_ba' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'BA[1].sstl_ba' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'BA[2].sstl_ba' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'BA[2].sstl_ba' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[0].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[0].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[1].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[1].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[2].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[2].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[3].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[3].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[4].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[4].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[5].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[5].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[6].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[6].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[7].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[7].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[8].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[8].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[9].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[9].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[10].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[10].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[11].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[11].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[12].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'A[12].sstl_a' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'DM[0].sstl_dm' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'DM[0].sstl_dm' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'DM[1].sstl_dm' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'RI' is connected to logic 0. 
+Warning: In design 'SSTL18DDR3INTERFACE', a pin on submodule 'DM[1].sstl_dm' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'TS' is connected to logic 1. 
+Warning: In design 'ddr3_controller', the same net is connected to more than one pin on submodule 'FIFO_DATA'. (LINT-33)
+   Net 'clk' is connected to pins 'rclk', 'wclk''.
+Warning: In design 'ddr3_controller', the same net is connected to more than one pin on submodule 'FIFO_CMD'. (LINT-33)
+   Net 'clk' is connected to pins 'rclk', 'wclk''.
+Warning: In design 'ddr3_controller', the same net is connected to more than one pin on submodule 'FIFO_RETURN'. (LINT-33)
+   Net 'clk' is connected to pins 'rclk', 'wclk''.
+Warning: In design 'ddr3_controller', input pin 'ck' of hierarchical cell 'XINIT' has no internal loads and is not connected to any nets. (LINT-60)
+Warning: Net 'dqsbar_pad[0]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dqsbar_pad[1]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dqs_pad[0]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dqs_pad[1]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dq_pad[0]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dq_pad[1]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dq_pad[2]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dq_pad[3]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dq_pad[4]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dq_pad[5]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dq_pad[6]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dq_pad[7]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dq_pad[8]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dq_pad[9]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dq_pad[10]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dq_pad[11]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dq_pad[12]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dq_pad[13]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dq_pad[14]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dq_pad[15]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'resetbar_pad' has a single tri-state driver.  (LINT-63)
+Warning: Net 'odt_pad' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dm_pad[0]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'dm_pad[1]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'a_pad[0]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'a_pad[1]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'a_pad[2]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'a_pad[3]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'a_pad[4]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'a_pad[5]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'a_pad[6]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'a_pad[7]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'a_pad[8]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'a_pad[9]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'a_pad[10]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'a_pad[11]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'a_pad[12]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'ba_pad[0]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'ba_pad[1]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'ba_pad[2]' has a single tri-state driver.  (LINT-63)
+Warning: Net 'webar_pad' has a single tri-state driver.  (LINT-63)
+Warning: Net 'casbar_pad' has a single tri-state driver.  (LINT-63)
+Warning: Net 'rasbar_pad' has a single tri-state driver.  (LINT-63)
+Warning: Net 'csbar_pad' has a single tri-state driver.  (LINT-63)
+Warning: Net 'cke_pad' has a single tri-state driver.  (LINT-63)
+Warning: Net 'ckbar_pad' has a single tri-state driver.  (LINT-63)
+Warning: Net 'ck_pad' has a single tri-state driver.  (LINT-63)
+1

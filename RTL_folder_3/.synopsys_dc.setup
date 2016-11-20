@@ -1,0 +1,56 @@
+# ==========================================================================
+#  University of Southern California
+#  Synopsys DesignCompiler setup file for OSU 0.18um Standard Cell Library
+#  by T.J. Kwon
+## Modification - Aditya Deshpande (02/13/2013) 
+## Added NCSU45nm library in the search path
+## 
+# ==========================================================================
+
+set search_path [ list . \
+                  ${synopsys_root}/libraries/syn \
+                  ${synopsys_root}/dw/sim_ver \
+                  /home/scf-22/ee577/design_pdk/osu_stdcells/lib/tsmc018/lib \
+                  /home/scf-23/nhourani/RTL_folder_3/design \
+		  /home/scf-22/ee577/NCSU45PDK/FreePDK45/osu_soc/lib/files ]
+
+##
+# Use one of the two libraries for synthesis - OSU180nm or NCSU45nm
+# Comment other library variables
+#
+##
+
+## For NCSUFreePDK45nm library
+## ---------------------------
+set target_library { gscl45nm.db }
+set synthetic_library [list dw_foundation.sldb standard.sldb ]
+set link_library [list * gscl45nm.db dw_foundation.sldb standard.sldb]
+
+## For osu180nm library
+## ---------------------
+#set target_library { osu180_stdcells.db }
+#set synthetic_library [list dw_foundation.sldb standard.sldb ]
+#set link_library [list * osu018_stdcells.db dw_foundation.sldb standard.sldb ]
+
+## Other Variables
+set command_log_file  "./command.log"
+set designer  ""
+set company  "University of Southern California"
+
+# set symbol_library  your_library.sdb 
+
+set view_command_log_file  "./view_command.log"
+set verilogout_no_tri "true"
+set verilogout_equation "false"
+set write_name_nets_same_as_ports true
+set verilogout_show_unconnected_pins "TRUE"
+set hdlin_presto_net_name_prefix "n"
+set alib_library_analysis_path "/home/scf-22/ee577/synthesis"
+
+#defined by nhouani@usc.edu 
+
+#needed for repeat instantiation w/new parameters (generats .mr/.pvl/.syn)
+set hdlin_auto_save_templates true  
+
+#places intermediate .mr/.pvl/.syn files in in WORK
+define_design_lib work -path ~/RTL_folder_3/work  

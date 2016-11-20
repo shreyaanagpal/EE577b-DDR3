@@ -1,0 +1,87 @@
+Information: Updating design information... (UID-85)
+Warning: Design 'ddr3_controller' contains 2 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+Information: Timing loop detected. (OPT-150)
+	PLOGIC/ring_buffer/F0_reg/CLK PLOGIC/ring_buffer/F0_reg/Q PLOGIC/ring_buffer/U622/A PLOGIC/ring_buffer/U622/Y PLOGIC/ring_buffer/U620/A PLOGIC/ring_buffer/U620/Y PLOGIC/ring_buffer/U621/A PLOGIC/ring_buffer/U621/Y PLOGIC/ring_buffer/U289/B PLOGIC/ring_buffer/U289/Y 
+Warning: Disabling timing arc between pins 'CLK' and 'Q' on cell 'PLOGIC/ring_buffer/F0_reg'
+         to break a timing loop. (OPT-314)
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : ddr3_controller
+Version: F-2011.09-SP2
+Date   : Sun Nov 20 06:13:50 2016
+****************************************
+
+ # A fanout number of 1000 was used for high fanout net computations.
+
+Operating Conditions: typical   Library: gscl45nm
+Wire Load Model Mode: top
+
+  Startpoint: FIFO_RETURN/rd_ptr_gray_ss_reg[4]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: PLOGIC/buff_data_reg[19][0]
+            (falling edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  FIFO_RETURN/rd_ptr_gray_ss_reg[4]/CLK (DFFSR)           0.00 #     0.00 r
+  FIFO_RETURN/rd_ptr_gray_ss_reg[4]/Q (DFFSR)             0.11       0.11 r
+  FIFO_RETURN/U12920/Y (INVX1)                            0.03       0.13 f
+  FIFO_RETURN/U130/Y (XOR2X1)                             0.06       0.19 r
+  FIFO_RETURN/U132/Y (XNOR2X1)                            0.05       0.24 r
+  FIFO_RETURN/U13065/Y (XNOR2X1)                          0.06       0.30 r
+  FIFO_RETURN/U134/Y (XOR2X1)                             0.05       0.35 f
+  FIFO_RETURN/U13047/Y (INVX1)                            0.02       0.37 r
+  FIFO_RETURN/U13125/Y (AND2X2)                           0.04       0.40 r
+  FIFO_RETURN/U221/Y (AND2X2)                             0.03       0.43 r
+  FIFO_RETURN/U225/Y (INVX1)                              0.02       0.45 f
+  FIFO_RETURN/U13039/Y (NAND3X1)                          0.03       0.48 r
+  FIFO_RETURN/U13038/Y (INVX1)                            0.02       0.50 f
+  FIFO_RETURN/U13037/Y (AOI21X1)                          0.02       0.52 r
+  FIFO_RETURN/U182/Y (BUFX2)                              0.03       0.55 r
+  FIFO_RETURN/U13035/Y (OAI21X1)                          0.01       0.57 f
+  FIFO_RETURN/U172/Y (AND2X2)                             0.03       0.60 f
+  FIFO_RETURN/U174/Y (INVX1)                              0.00       0.59 r
+  FIFO_RETURN/U196/Y (AND2X2)                             0.03       0.62 r
+  FIFO_RETURN/U198/Y (INVX1)                              0.01       0.64 f
+  FIFO_RETURN/U184/Y (OR2X2)                              0.04       0.68 f
+  FIFO_RETURN/U186/Y (INVX1)                              0.00       0.67 r
+  FIFO_RETURN/U215/Y (AND2X2)                             0.03       0.71 r
+  FIFO_RETURN/U217/Y (INVX1)                              0.02       0.72 f
+  FIFO_RETURN/full_bar (FIFO_2clk_DATA_WIDTH42_FIFO_DEPTH32_PTR_WIDTH6)
+                                                          0.00       0.72 f
+  PLOGIC/RETURN_full (Processing_logic)                   0.00       0.72 f
+  PLOGIC/U463/Y (INVX1)                                   0.00       0.73 r
+  PLOGIC/U474/Y (OR2X2)                                   0.04       0.76 r
+  PLOGIC/U2431/Y (AOI21X1)                                0.02       0.79 f
+  PLOGIC/U723/Y (BUFX2)                                   0.04       0.82 f
+  PLOGIC/U548/Y (INVX1)                                   0.01       0.83 r
+  PLOGIC/U529/Y (INVX1)                                   0.02       0.85 f
+  PLOGIC/U478/Y (INVX1)                                   0.01       0.85 r
+  PLOGIC/U501/Y (OR2X2)                                   0.05       0.90 r
+  PLOGIC/U2534/Y (INVX1)                                  0.03       0.93 f
+  PLOGIC/U4119/Y (MUX2X1)                                 0.07       1.00 r
+  PLOGIC/U3084/Y (INVX8)                                  0.02       1.01 f
+  PLOGIC/buff_data_reg[19][0]/D (DFFNEGX1)                0.00       1.01 f
+  data arrival time                                                  1.01
+
+  clock clk (fall edge)                                   0.80       0.80
+  clock network delay (ideal)                             0.00       0.80
+  PLOGIC/buff_data_reg[19][0]/CLK (DFFNEGX1)              0.00       0.80 f
+  library setup time                                     -0.22       0.58
+  data required time                                                 0.58
+  --------------------------------------------------------------------------
+  data required time                                                 0.58
+  data arrival time                                                 -1.01
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                                  -0.43
+
+
+1
